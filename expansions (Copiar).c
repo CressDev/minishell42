@@ -6,7 +6,7 @@
 /*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 20:45:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/03 08:33:27 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/03 08:21:23 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,22 @@ char	*append_expansion(char *resul, char *expanded)
 	free(expanded);
 	return (temp);
 }
+
+int	handle_quotes(char c, int *in_single_quote)
+{
+	if (c == '\'' && !*in_single_quote)
+	{
+		*in_single_quote = 1;
+		return (1);
+	}
+	else if (c == '\'' && *in_single_quote)
+	{
+		*in_single_quote = 0;
+		return (1);
+	}
+	return (0);
+}
+
 
 void get_quote_context(const char *raw_token, int upto, 
 					int *in_single_quote, int *in_double_quote)

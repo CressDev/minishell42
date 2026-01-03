@@ -6,7 +6,7 @@
 /*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/01 11:13:42 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/03 08:33:34 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,6 @@ char		*extract_right_operator_token(char *line, int pos);
 char		*extract_operator_token(char *line, int pos);
 
 int			calculate_unquoted_len(char *str, int start, int end);
-int			handle_quotes(char c, int *in_single_quote);
 char		*process_quotes(char *str, int start, int end);
 char		*process_expansions(char *str, t_list *env);
 char		*expand_variable(char *str, int *pos, t_list *env);
