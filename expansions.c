@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansions.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amonteag <amonteag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 20:45:00 by cress             #+#    #+#             */
-/*   Updated: 2025/12/29 11:20:59 by amonteag         ###   ########.fr       */
+/*   Updated: 2026/01/03 08:33:27 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,34 +52,37 @@ char	*append_expansion(char *resul, char *expanded)
 	return (temp);
 }
 
-int	handle_quotes(char c, int *in_single_quote)
+void get_quote_context(const char *raw_token, int upto, 
+					int *in_single_quote, int *in_double_quote)
 {
-	if (c == '\'' && !*in_single_quote)
-	{
-		*in_single_quote = 1;
-		return (1);
+	int	j;
+
+	j = 0;
+	*in_single_quote = 0;
+	*in_double_quote = 0;
+	while (j < upto) {
+		if (raw_token[j] == '\'' && !(*in_double_quote))
+			*in_single_quote = !(*in_single_quote);
+		else if (raw_token[j] == '"' && !(*in_single_quote))
+			*in_double_quote = !(*in_double_quote);
+		j++;
 	}
-	else if (c == '\'' && *in_single_quote)
-	{
-		*in_single_quote = 0;
-		return (1);
-	}
-	return (0);
 }
 
-char	*process_char_expan(char *resul, char *raw_token, int *i, t_list *env)
+char *process_char_expan(char *resul, char *raw_token, int *i, t_list *env)
 {
-	char		*expanded;
-	char		*temp;
-	static int	in_single_quote = 0;
-
-	if (handle_quotes(raw_token[*i], &in_single_quote))
+	char	*expanded;
+	char	*temp;
+	int		in_single_quote;
+	int		in_double_quote;
+	
+	get_quote_context(raw_token, *i, &in_single_quote, &in_double_quote);
+	if (raw_token[*i] == '\'' && !in_double_quote)
 	{
 		temp = ft_strjoin(resul, (char [2]){raw_token[*i], '\0'});
 		if (!temp)
 			return (free(resul), NULL);
-		(*i)++;
-		return (free(resul), temp);
+		return ((*i)++, free(resul), temp);
 	}
 	if (raw_token[*i] == '$' && !in_single_quote)
 	{
@@ -92,8 +95,7 @@ char	*process_char_expan(char *resul, char *raw_token, int *i, t_list *env)
 	temp = ft_strjoin(resul, (char [2]){raw_token[*i], '\0'});
 	if (!temp)
 		return (free(resul), NULL);
-	(*i)++;
-	return (free(resul), temp);
+	return ((*i)++, free(resul), temp);
 }
 
 char	*process_expansions(char *raw_token, t_list *env)
