@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amonteag <amonteag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 11:10:15 by amonteag          #+#    #+#             */
-/*   Updated: 2025/12/29 11:41:38 by amonteag         ###   ########.fr       */
+/*   Updated: 2026/01/03 08:59:11 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,10 @@ char	*handle_continuation(char *line)
 
 int	process_empty_line(char *line)
 {
-	if (line[0] == '\0')
+	size_t	i;
+
+	i = skip_spaces(line, 0);
+	if (line[0] == '\0' || i == ft_strlen(line))
 	{
 		g_signal = 0;
 		free(line);
