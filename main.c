@@ -26,35 +26,10 @@ static void	show_init_ms(void)
 		\n	\n");
 }
 
-static t_list	*init_env(char **environ)
-{
-	t_list	*env;
-	t_list	*new;
-	int		i;
-
-	i = 0;
-	if (!environ || !environ[0])
-		return (env = ft_lstnew(ft_strdup("SHLVL=1")));
-	env = ft_lstnew(ft_strdup(environ[0]));
-	if (!env)
-		return (NULL);
-	if (!(env->content) && env)
-		free(env);
-	while (environ[++i])
-	{
-		new = ft_lstnew(ft_strdup(environ[i]));
-		if (!(new->content) && new)
-			free(new);
-		if (!new)
-			return (ft_lstclear(&env, free), NULL);
-		ft_lstadd_back(&env, new);
-	}
-	return (env);
-}
-
 int	main(int ac, char **av, char **environ)
 {
 	t_list	*env;
+	t_cmd	*cmd;
 
 	(void)av;
 	if (ac > 1)
@@ -66,6 +41,7 @@ int	main(int ac, char **av, char **environ)
 	env = init_env(environ);
 	if (env == NULL)
 		return (write(1, "Error\n", 6));
-	read_line(env, environ);
+	cmd = init_cmd(environ);
+	read_line(cmd);
 	ft_lstclear(&env, free);
 }

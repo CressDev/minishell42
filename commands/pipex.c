@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amonteag <amonteag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:52:04 by cress             #+#    #+#             */
-/*   Updated: 2025/12/29 15:49:48 by amonteag         ###   ########.fr       */
+/*   Updated: 2026/01/08 22:14:42 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,28 +75,26 @@ static void	wait_for_pipeline_completion(t_exec_data *exec_data)
 	restore_signal_handler(&sa_old);
 }
 
-static void	setup_pipeline_execution(t_exec_data *exec_data, t_list **env,
-								char **environ, int is_tty)
+static void	setup_pipeline_execution(t_exec_data *exec_data, t_cmd *cmd, int is_tty)
 {
-	exec_data->env = env;
-	exec_data->environ = environ;
+	exec_data->env = cmd->env;
+	exec_data->environ = cmd->environ;
 	exec_data->is_tty = is_tty;
 	exec_data->last_child_pid = -1;
 }
 
-void	execute_pipeline(t_cmd *cmd_list, t_list **env, char **environ,
-						int is_tty)
+void	execute_pipeline(t_cmd *cmd, t_token **tokens, int is_tty)
 {
 	t_cmd		*current;
 	int			pipefd[2];
 	int			prev_fd;
 	t_exec_data	exec_data;
 
-	if (!cmd_list->next)
-		return (exec_redir(cmd_list, env, environ, is_tty));
-	setup_pipeline_execution(&exec_data, env, environ, is_tty);
+	if (!(*tokens)->next)
+		return (exec_redir(cmd, is_tty));
+	setup_pipeline_execution(&exec_data, cmd, is_tty);
 	prev_fd = -1;
-	current = cmd_list;
+	current = (*tokens);
 	while (current)
 	{
 		if (execute_single_pipe_cmd(current, &prev_fd, pipefd,

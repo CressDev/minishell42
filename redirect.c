@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amonteag <amonteag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:00:00 by cress             #+#    #+#             */
-/*   Updated: 2025/12/29 11:38:55 by amonteag         ###   ########.fr       */
+/*   Updated: 2026/01/08 22:12:20 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	setup_output_redirect(t_cmd *cmd)
 	return (output_fd);
 }
 
-void	exec_redir(t_cmd *cmd, t_list **env, char **environ, int is_tty)
+void	exec_redir(t_cmd *cmd, int is_tty)
 {
 	int	saved_stdin;
 	int	saved_stdout;
@@ -73,7 +73,7 @@ void	exec_redir(t_cmd *cmd, t_list **env, char **environ, int is_tty)
 		dup2(input_fd, STDIN_FILENO);
 	if (output_fd != -1)
 		dup2(output_fd, STDOUT_FILENO);
-	if (!is_built_in(env, cmd->args))
-		is_execute(env, cmd->args, environ);
+	if (!is_built_in(cmd->env, cmd->args))
+		is_execute(cmd->env, cmd->args, cmd->environ);
 	restore_fds(saved_stdin, saved_stdout, input_fd, output_fd);
 }

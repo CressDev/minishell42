@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amonteag <amonteag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:27:13 by cress             #+#    #+#             */
-/*   Updated: 2025/12/30 09:46:58 by amonteag         ###   ########.fr       */
+/*   Updated: 2026/01/08 21:51:14 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,18 @@ char	*create_prompt(t_list *env)
 		free(path_colored), user_name);
 }
 
-int	is_closed_line(char *line)
+int	process_empty_line(char *line)
 {
-	int	i;
-	int	single;
-	int	doubles;
+	size_t	i;
 
-	i = 0;
-	single = 1;
-	doubles = 1;
-	while (line[i])
+	i = skip_spaces(line, 0);
+	if (line[0] == '\0' || i == ft_strlen(line))
 	{
-		if (line[i] == '\'' && doubles)
-			single = !single;
-		else if (line[i] == '"' && single)
-			doubles = !doubles;
-		i++;
+		g_signal = 0;
+		free(line);
+		return (1);
 	}
-	return (single && doubles);
+	return (0);
 }
 
 char	*create_line(t_list *env)
@@ -97,15 +91,17 @@ void	change_signal(void)
 		exit(g_signal);
 }
 
-void	read_line(t_list *env, char **environ)
+void	read_line(t_cmd *cmd)
 {
 	char	*line;
+	t_token	*tokens;
 	int		is_tty;
 
 	is_tty = isatty(STDIN_FILENO);
 	while (1)
 	{
-		line = create_line(env);
+		tokens = NULL;
+		line = create_line(*cmd->env);
 		if (!line)
 		{
 			if (is_tty)
@@ -113,14 +109,9 @@ void	read_line(t_list *env, char **environ)
 			else
 				break ;
 		}
-		if (process_empty_line(line) || line_ends_with_pipe(line))
+		if (process_empty_line(line))
 			continue ;
-		if (!is_closed_line(line))
-		{
-			line = handle_continuation(line);
-			if (!line)
-				continue ;
-		}
-		execute_and_cleanup(&env, line, environ, is_tty);
+		entry_point(line, &tokens);
+		execute_and_cleanup(cmd, line, is_tty);
 	}
 }

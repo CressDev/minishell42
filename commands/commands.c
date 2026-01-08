@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amonteag <amonteag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 22:31:48 by cress             #+#    #+#             */
-/*   Updated: 2025/12/29 11:19:59 by amonteag         ###   ########.fr       */
+/*   Updated: 2026/01/08 22:16:13 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,55 +33,47 @@ bool	is_built_in(t_list **env, char **tokens)
 	return (false);
 }
 
-static void	exec_redirection_cmd(char **tokens, t_list **env, char **environ,
-								int is_tty)
+static void	exec_redirection_cmd(t_cmd *cmd, int is_tty, t_token **tokens)
 {
 	t_cmd	*cmd;
 
 	cmd = parse_redirections(tokens);
 	if (cmd)
 	{
-		exec_redir(cmd, env, environ, is_tty);
+		exec_redir(cmd, is_tty);
 		free_redirect(cmd);
 	}
 }
 
-static void	exec_pipeline_cmd(char **tokens, t_list **env, char **environ,
-							int is_tty)
+static void	exec_pipeline_cmd(t_cmd *cmd, int is_tty, t_token **tokens)
 {
 	t_cmd	*cmd;
 
 	cmd = parse_pipeline(tokens);
 	if (cmd)
 	{
-		execute_pipeline(cmd, env, environ, is_tty);
+		execute_pipeline(cmd, tokens, is_tty);
 		free_pipeline(cmd);
 	}
 }
 
-void	exec_parsed_cmd(char **tokens, t_list **env, char **environ,
-					int is_tty)
+void	exec_parsed_cmd(t_cmd *cmd, t_token **tokens, int is_tty)
 {
 	if (!validate_pipe_syntax(tokens))
 		return ;
 	if (has_pipes(tokens))
-		exec_pipeline_cmd(tokens, env, environ, is_tty);
+		exec_pipeline_cmd(cmd, tokens, is_tty);
 	else if (has_redirections(tokens))
-		exec_redirection_cmd(tokens, env, environ, is_tty);
+		exec_redirection_cmd(cmd, tokens, is_tty);
 	else
 	{
-		if (!is_built_in(env, tokens))
-			is_execute(env, tokens, environ);
+		if (!is_built_in(cmd->env, tokens))
+			is_execute(cmd->env, tokens, cmd->environ);
 	}
 }
 
-void	exec_command(t_list **env, char *line, char **environ, int is_tty)
+void	exec_command(t_cmd *cmd, int is_tty, t_token **tokens)
 {
-	char	**tokens;
-
-	tokens = tokenize_shell_line(line, *env);
-	if (!tokens)
-		return ;
-	exec_parsed_cmd(tokens, env, environ, is_tty);
+	exec_parsed_cmd(cmd, tokens, is_tty);
 	free_mem(tokens);
 }
