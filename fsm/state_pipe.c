@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:48:56 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/08 19:53:04 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/09 23:00:55 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ bool	state_pipe(t_fsm *fsm, char c, t_token **tokens)
 {
 	size_t	tmp;
 
+	if (c != '|')
+		return (false);
 	token_append_char(fsm, c, tokens);
 	create_token(fsm, tokens, 0);
 	tmp = fsm->i_input + 1;

@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/09 22:23:17 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/09 22:38:54 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_fsm
 	size_t			counter; /**< Aux counter of the FSM. */
 	size_t			token_capacity; /**< Int to represet initial buffer size */
 	bool			has_error; /**< Boolean to control error state. */
+	bool			has_content;
 	char			*input; /**< User input (readline). */
 	char			*token; /**< Buffer to construct tokens. */
 }	t_fsm;

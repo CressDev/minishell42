@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:44:40 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/08 19:48:31 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/09 22:56:56 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool	state_word(t_fsm *fsm, char c, t_token **tokens)
 {
-	if (c == ' ' || c == '\t' || c == '\0')
+	if ((c == ' ' || c == '\t' || c == '\0') && fsm->has_content)
 	{
 		create_token(fsm, tokens, 0);
 		fsm->current_state = STATE_START;
@@ -22,6 +22,8 @@ bool	state_word(t_fsm *fsm, char c, t_token **tokens)
 	}
 	else if (c == '|')
 	{
+		if (fsm->has_content)
+			create_token(fsm, tokens, 0);
 		fsm->current_state = STATE_PIPE;
 		return (false);
 	}
@@ -35,6 +37,6 @@ bool	state_word(t_fsm *fsm, char c, t_token **tokens)
 		fsm->current_state = STATE_DQUOTE;
 		return (true);
 	}
-	else
-		return ((token_append_char(fsm, c, tokens), true));
+	token_append_char(fsm, c, tokens);
+	return (true);
 }

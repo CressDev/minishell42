@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 20:01:53 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/09 18:07:15 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/09 22:54:41 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,25 +60,21 @@ void	token_append_str(t_fsm *fsm, const char *str, t_token **tokens)
 
 	i = 0;
 	len = ft_strlen(str);
-	if (fsm->i_input + len >= fsm->token_capacity)
+	if (fsm->i_token + len >= fsm->token_capacity)
 		expand_token_buffer(fsm, tokens);
 	while (i < len)
-	{
-		fsm->token[fsm->i_token] = str[i];
-		fsm->i_token++;
-		i++;
-	}
+		fsm->token[fsm->i_token++] = str[i++];
+	fsm->token[fsm->i_token] = '\0';
+	fsm->has_content = true;
 }
 
 void	token_append_char(t_fsm *fsm, const char c, t_token **tokens)
 {
 	if (fsm->i_token + 1 >= fsm->token_capacity)
 		expand_token_buffer(fsm, tokens);
-	if (c == '\n' && (fsm->prev_state == STATE_DQUOTE
-		|| fsm->prev_state == STATE_SQUOTE))
-		return ;
 	fsm->token[fsm->i_token++] = c;
 	fsm->token[fsm->i_token] = '\0';
+	fsm->has_content = true;
 }
 
 void	free_tokens(t_token **tokens)
