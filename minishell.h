@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/09 22:17:02 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/09 22:23:17 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,7 +264,7 @@ void		signal_ctlc_heredoc(int sig);
 void		signal_ctlc_continuation(int sig);
 void		read_line(t_envs *envs);
 void		free_mem(char **str);
-void		execute_and_cleanup(t_token **tokens, int is_tty);
+void		execute_and_cleanup(t_token **tokens, t_envs *envs, int is_tty);
 int			process_empty_line(char *line);
 char		*create_line(t_list *env);
 
