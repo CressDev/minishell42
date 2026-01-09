@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:13:57 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/08 19:21:39 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/09 18:08:07 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,23 @@ t_fsm	*init_fsm(char *input)
 	else
 		fsm->input = NULL;
 	return (fsm);
+}
+
+t_token_type	fsm_state_to_token_type(t_fsm *fsm)
+{
+	if (fsm->current_state == STATE_PIPE)
+		return (TOKEN_PIPE);
+	if (fsm->current_state == STATE_REDIRECT)
+	{
+		if (ft_strcmp(fsm->token, ">>") == 0)
+			return (TOKEN_APPEND);
+		if (ft_strcmp(fsm->token, "<<") == 0)
+			return (TOKEN_HEREDOC);
+		if (ft_strcmp(fsm->token, "<") == 0)
+			return (TOKEN_REDIR_IN);
+		return (TOKEN_REDIR_OUT);
+	}
+	return (TOKEN_WORD);
 }
 
 void	create_token(t_fsm *fsm, t_token **tokens, int quoted)

@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 22:27:13 by cress             #+#    #+#             */
-/*   Updated: 2026/01/08 21:51:14 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/09 22:10:59 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ int	process_empty_line(char *line)
 {
 	size_t	i;
 
-	i = skip_spaces(line, 0);
+	i = 0;
+	while (line[i] == ' ')
+		i++;
 	if (line[0] == '\0' || i == ft_strlen(line))
 	{
 		g_signal = 0;
@@ -91,7 +93,7 @@ void	change_signal(void)
 		exit(g_signal);
 }
 
-void	read_line(t_cmd *cmd)
+void	read_line(t_envs *envs)
 {
 	char	*line;
 	t_token	*tokens;
@@ -101,7 +103,7 @@ void	read_line(t_cmd *cmd)
 	while (1)
 	{
 		tokens = NULL;
-		line = create_line(*cmd->env);
+		line = create_line((*envs->env));
 		if (!line)
 		{
 			if (is_tty)
@@ -111,7 +113,10 @@ void	read_line(t_cmd *cmd)
 		}
 		if (process_empty_line(line))
 			continue ;
+		add_history(line);
 		entry_point(line, &tokens);
-		execute_and_cleanup(cmd, line, is_tty);
+		if (tokens)
+			execute_and_cleanup(tokens, is_tty);
+		free(line);
 	}
 }

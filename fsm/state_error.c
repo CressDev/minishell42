@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:53:53 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/08 19:55:31 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/09 20:38:05 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ bool	state_error(t_fsm *fsm, char c, t_token **tokens)
 	(void)tokens;
 	msg = "\0";
 	if (fsm->current_state == STATE_PIPE)
-		msg = "unexpected EOF while looking for extra command \n";
+		msg = "minishell> unexpected EOF while looking for extra command \n";
 	else if (fsm->current_state == STATE_DQUOTE
 		|| fsm->current_state == STATE_SQUOTE)
-		msg = "unexpected EOF while looking for a quote \n";
+		msg = "minishell> unexpected EOF while looking for a quote \n";
 	else if (fsm->current_state == STATE_REDIRECT)
-		msg = "unexpected EOF while looking for fd to redirect I/O \n";
+		msg = "minishell> unexpected EOF while looking for fd to redirect I/O \n";
 	ft_putstr_fd(msg, 2);
 	fsm->has_error = true;
 	fsm->current_state = STATE_ERROR;

@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 20:01:53 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/08 20:15:46 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/09 18:07:15 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_token	*init_token(t_fsm *fsm, int quoted)
 	if (!token)
 		return (NULL);
 	token->next = NULL;
-	token->type = fsm->current_state;
+	token->type = fsm_state_to_token_type(fsm);
 	token->quote = quoted;
 	if (fsm->token[0] != '\0' && fsm->token[0] != '\n')
 	{

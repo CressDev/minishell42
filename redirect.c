@@ -6,11 +6,31 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:00:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/08 22:12:20 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/09 20:58:59 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	restore_fds(int saved_stdin, int saved_stdout, int input_fd,
+				int output_fd)
+{
+	if (saved_stdin != -1)
+	{
+		dup2(saved_stdin, STDIN_FILENO);
+		close(saved_stdin);
+	}
+	if (saved_stdout != -1)
+	{
+		dup2(saved_stdout, STDOUT_FILENO);
+		close(saved_stdout);
+	}
+	if (input_fd != -1)
+		close(input_fd);
+	if (output_fd != -1)
+		close(output_fd);
+}
+
 
 int	setup_input_redirect(t_cmd *cmd)
 {
@@ -49,7 +69,7 @@ int	setup_output_redirect(t_cmd *cmd)
 	return (output_fd);
 }
 
-void	exec_redir(t_cmd *cmd, int is_tty)
+void	exec_redir(t_cmd *cmd, t_envs *envs, int is_tty)
 {
 	int	saved_stdin;
 	int	saved_stdout;
@@ -73,7 +93,7 @@ void	exec_redir(t_cmd *cmd, int is_tty)
 		dup2(input_fd, STDIN_FILENO);
 	if (output_fd != -1)
 		dup2(output_fd, STDOUT_FILENO);
-	if (!is_built_in(cmd->env, cmd->args))
-		is_execute(cmd->env, cmd->args, cmd->environ);
+	if (!is_built_in(envs->env, cmd->args))
+		is_execute(envs->env, cmd->args, envs->environ);
 	restore_fds(saved_stdin, saved_stdout, input_fd, output_fd);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 21:03:47 by cress             #+#    #+#             */
-/*   Updated: 2025/12/23 20:29:42 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/09 22:05:04 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ void	unset_command(t_list **env, char **tokens)
 	g_signal = 0;
 }
 
-void	env_command(t_list *env, char **tokens)
+void	env_command(t_list *env, char **args)
 {
 	t_list	*cur;
 
-	if (ft_count(tokens) > 1)
+	if (ft_count(args) > 1)
 		return (ft_printf("env: %s: The file or directory does not exit"),
 			g_signal = 127, (void)0);
 	cur = env;

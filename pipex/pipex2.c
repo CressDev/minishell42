@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amonteag <amonteag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 10:15:00 by cress             #+#    #+#             */
-/*   Updated: 2025/12/29 15:25:56 by amonteag         ###   ########.fr       */
+/*   Updated: 2026/01/09 22:20:12 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ void	execute_pipeline_child(t_cmd *cmd, int input_fd, int output_fd,
 	file_fd = -1;
 	setup_pipe_redirections(input_fd, output_fd);
 	setup_file_redirections(cmd, file_fd, exec_data->is_tty);
-	if (is_built_in(exec_data->env, cmd->args))
+	if (is_built_in(exec_data->envs->env, cmd->args))
 		exit(g_signal);
 	else
-		direct_execute(exec_data->env, cmd->args, exec_data->environ);
+		direct_execute(exec_data->envs->env, cmd->args, exec_data->envs->environ);
 }
