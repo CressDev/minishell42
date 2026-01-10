@@ -6,13 +6,33 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:52:04 by cress             #+#    #+#             */
-/*   Updated: 2026/01/09 22:13:11 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/10 17:20:46 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <signal.h>
-#include <errno.h>
+
+static void	wait_for_pipeline_completion(t_exec_data *exec_data)
+{
+	int					status;
+	pid_t				pid;
+	struct sigaction	sa_old;
+
+	install_sigint_wait_handler(&sa_old);
+	pid = waitpid(-1, &status, 0);
+	while (pid > 0)
+	{
+		if (pid == exec_data->last_child_pid)
+		{
+			if (WIFEXITED(status))
+				g_signal = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				g_signal = 128 + WTERMSIG(status);
+		}
+		pid = waitpid(-1, &status, 0);
+	}
+	restore_signal_handler(&sa_old);
+}
 
 static void	handle_parent_process(pid_t pid, t_pipeinfo *pipes, t_cmd *current,
 								t_exec_data *exec_data)
@@ -53,34 +73,6 @@ int	execute_single_pipe_cmd(t_cmd *current, int *prev_fd, int pipefd[2],
 	return (0);
 }
 
-static void	wait_for_pipeline_completion(t_exec_data *exec_data)
-{
-	int					status;
-	pid_t				pid;
-	struct sigaction	sa_old;
-
-	install_sigint_wait_handler(&sa_old);
-	pid = waitpid(-1, &status, 0);
-	while (pid > 0)
-	{
-		if (pid == exec_data->last_child_pid)
-		{
-			if (WIFEXITED(status))
-				g_signal = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-				g_signal = 128 + WTERMSIG(status);
-		}
-		pid = waitpid(-1, &status, 0);
-	}
-	restore_signal_handler(&sa_old);
-}
-
-static void	setup_pipeline_execution(t_exec_data *exec_data, int is_tty)
-{
-	exec_data->is_tty = is_tty;
-	exec_data->last_child_pid = -1;
-}
-
 void	execute_pipeline(t_cmd *cmd, int is_tty)
 {
 	t_cmd		*current;
@@ -90,7 +82,8 @@ void	execute_pipeline(t_cmd *cmd, int is_tty)
 
 	if (!cmd->next)
 		return (exec_redir(cmd, is_tty));
-	setup_pipeline_execution(&exec_data, is_tty);
+	exec_data.is_tty = is_tty;
+	exec_data.last_child_pid = -1;
 	prev_fd = -1;
 	current = cmd;
 	while (current)

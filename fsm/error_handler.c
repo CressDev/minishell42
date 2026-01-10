@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_handfler.c                                   :+:      :+:    :+:   */
+/*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 18:54:59 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/08 19:13:24 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/09 23:26:13 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	error_handler(t_fsm *fsm, const char *line)
 	}
 	ft_strlcpy(new_input, fsm->input, len);
 	ft_strlcat(new_input, extra, len);
-	ft_strlcat(new_input, "\0", len);
 	free(extra);
 	fsm->input = new_input;
 }

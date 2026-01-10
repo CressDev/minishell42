@@ -77,16 +77,16 @@ void	order_env(t_list *env)
 	}
 }
 
-void	export_command(t_list **env, char **words)
+void	export_command(t_list **env, t_cmd *cmd)
 {
 	t_list	*current;
 	int		i;
 
-	if (ft_count(words) == 1)
+	if (cmd->argc == 1)
 	{
 		current = *env;
 		order_env(current);
-		while (current)
+		while(current)
 		{
 			ft_printf("declare -x %s\n", current->content);
 			current = current->next;
@@ -95,40 +95,12 @@ void	export_command(t_list **env, char **words)
 	else
 	{
 		i = 1;
-		while (words[i])
+		while (i < cmd->argc)
 		{
-			if (!handler_var(env, words[i], 0))
-				add_new_var(env, words[i]);
+			if (!handler_var(env, cmd->args[i], 0))
+				add_new_var(env, cmd->args[i]);
 			i++;
 		}
 	}
-	g_signal = 0;
-}
-
-void	echo_command(char **tokens)
-{
-	int		i;
-	int		j;
-	bool	newline;
-
-	i = 1;
-	newline = true;
-	while (tokens[i] && tokens[i][0] == '-' && tokens[i][1] == 'n')
-	{
-		j = 2;
-		while (tokens[i][j] == 'n')
-			j++;
-		if (tokens[i][j] != '\0')
-			break ;
-		i++;
-		newline = false;
-	}
-	while (i < ft_count(tokens))
-	{
-		show_tokens(tokens, tokens[i], i);
-		i++;
-	}
-	if (newline)
-		ft_printf("\n");
 	g_signal = 0;
 }

@@ -6,13 +6,13 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:33:52 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/09 22:49:14 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/10 14:52:24 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	state_dquote(t_fsm *fsm, char c, t_token **tokens)
+bool	state_squote(t_fsm *fsm, char c, t_token **tokens)
 {
 	if (c == '\'')
 	{

@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:47:40 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/09 20:42:58 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/10 17:55:17 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static int	add_arg(t_cmd *cmd, char *arg)
 		return (free(new_args), -1);
 	free(cmd->args);
 	cmd->args = new_args;
+	cmd->argc++;
 	return (0);
 }
 

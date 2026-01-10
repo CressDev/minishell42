@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 11:10:15 by amonteag          #+#    #+#             */
-/*   Updated: 2026/01/09 22:22:52 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/10 17:55:29 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,4 @@ t_cmd	*parse_tokens(t_token *token, t_envs *envs)
 		token = token->next;
 	}
 	return (head);
-}
-
-void	execute_and_cleanup(t_token **tokens, t_envs *envs, int is_tty)
-{
-	exec_command(tokens, envs, is_tty);
 }

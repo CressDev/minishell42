@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amonteag <amonteag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:04:20 by cress             #+#    #+#             */
-/*   Updated: 2025/12/30 10:27:16 by amonteag         ###   ########.fr       */
+/*   Updated: 2026/01/10 18:12:11 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	show_tokens(char **tokens, char *token, int i)
-{
-	ft_printf("%s", token);
-	if (i + 1 < ft_count(tokens))
-		ft_printf(" ");
-}
 
 bool	is_valid_number(char *str)
 {

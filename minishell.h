@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/09 22:38:54 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/10 18:38:13 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stddef.h>
+# include <errno.h>
 
 # define COLOR_RESET	"\033[0m"
 # define COLOR_BLUE		"\033[1;34m"
@@ -76,6 +77,8 @@ typedef enum e_token_type
  * 
  * - has_error = bool to control special error state in FSM.
  * 
+ * - has_content = bool to determinate if the token has content.
+ * 
  * - input = user entry allocated with readline function
  * 
  * - token = constructed buffer to save the user input. The token is created
@@ -91,7 +94,7 @@ typedef struct s_fsm
 	size_t			counter; /**< Aux counter of the FSM. */
 	size_t			token_capacity; /**< Int to represet initial buffer size */
 	bool			has_error; /**< Boolean to control error state. */
-	bool			has_content;
+	bool			has_content; /**< Boolean that determines the token creation. */
 	char			*input; /**< User input (readline). */
 	char			*token; /**< Buffer to construct tokens. */
 }	t_fsm;
@@ -170,6 +173,8 @@ typedef struct s_token
  * 
  * - is_heredoc: Flag indicating whether the command uses a heredoc (`<<`) input.
  * 
+ * - argc: Number of commands stored in args.
+ * 
  * - next: Pointer to the next t_cmd in a pipeline sequence.
  *         NULL if this is the last command in the pipeline.
  * 
@@ -183,29 +188,33 @@ typedef struct s_token
  */
 typedef struct s_cmd
 {
-	t_envs			*envs;               /**< Shell environment. Check structure for further info. */
-	char			**args;              /**< Command and arguments. */
-	char			*input_file;         /**< Input redirection file. */
-	char			*output_file;        /**< Output redirection file. */
-	char			**heredoc_delimiter; /**< Heredoc delimiters. */
-	int				append;              /**< Output append flag (>>). */
-	int				is_heredoc;          /**< Heredoc flag (<<). */
-	struct s_cmd	*next;               /**< Next command in pipeline. */
+	t_envs			*envs;					/**< Shell environment. Check structure for further info. */
+	char			**args;					/**< Command and arguments. */
+	char			*input_file;			/**< Input redirection file. */
+	char			*output_file;			/**< Output redirection file. */
+	char			**heredoc_delimiter;	/**< Heredoc delimiters. */
+	int				append;					/**< Output append flag (>>). */
+	int				is_heredoc;				/**< Heredoc flag (<<). */
+	int				argc;					/**< Number of commands. */
+	struct s_cmd	*next;					/**< Next command in pipeline. */
 }	t_cmd;
 
 typedef struct s_exec_data
 {
-	t_envs			*envs;
 	int				is_tty;
 	pid_t			last_child_pid;
 }	t_exec_data;
 
 typedef struct s_pipeinfo
 {
-	int	*prev_fd;
-	int	pipefd[2];
+	int				*prev_fd;
+	int				pipefd[2];
 }	t_pipeinfo;
 
+t_list			**init_env(char **environ);
+bool			handle_eof(char *line, int is_tty);
+bool			handle_interrupt(char *line);
+bool			obtain_tokens(char *line, t_token **tokens);
 void			entry_point(char *input, t_token **tokens);
 t_fsm			*init_fsm(char *input);
 t_token_type	fsm_state_to_token_type(t_fsm *fsm);
@@ -233,12 +242,13 @@ t_cmd			*token_word(t_cmd *current, t_token *token, t_envs *envs);
 t_cmd			*token_pipe(t_envs *envs, t_cmd *current);
 void			token_redirect(t_cmd *current, t_token *token);
 
-t_cmd		*init_cmd(t_envs *envs);
-t_list		**init_env(char **environ);
+t_cmd			*init_cmd(t_envs *envs);
+t_cmd			*parse_tokens(t_token *token, t_envs *envs);
+
 void		free_redirect(t_cmd *cmd);
 void		restore_fds(int saved_stdin, int saved_stdout, int input_fd,
 				int output_fd);
-void		exec_redir(t_cmd *cmd, t_envs *envs, int is_tty);
+void		execute_redir(t_cmd *cmd, t_envs *envs, int is_tty);
 int			setup_input_redirect(t_cmd *cmd);
 int			setup_output_redirect(t_cmd *cmd);
 int			setup_heredoc(char *delimiter, int is_tty);
@@ -263,29 +273,22 @@ void		set_continuation_signal_handler(struct sigaction *old_sa);
 void		signal_handler(int sig);
 void		signal_ctlc_heredoc(int sig);
 void		signal_ctlc_continuation(int sig);
-void		read_line(t_envs *envs);
 void		free_mem(char **str);
-void		execute_and_cleanup(t_token **tokens, t_envs *envs, int is_tty);
-int			process_empty_line(char *line);
-char		*create_line(t_list *env);
+void		commands_parse_execution(t_token **tokens, t_envs *envs, int is_tty);
 
-void		show_tokens(char **tokens, char *token, int i);
-void		exec_command(t_cmd *cmd, t_envs *envs, int is_tty);
 void		env_command(t_list *env, char **args);
 void		pwd_command(void);
 void		exit_command(char **tokens);
 void		unset_command(t_list **env, char **tokens);
-void		export_command(t_list **env, char **words);
-void		add_new_var(t_list **env, char *word);
-void		echo_command(char **tokens);
+void		export_command(t_list **env, t_cmd *cmd);
+void		echo_command(t_cmd *cmd);
 void		cd_command(t_list **env, char **tokens);
 void		ch_dir(t_list **env, char *cur_dir, char *path);
 void		chenv(t_list **env, char *new_dir, char *cur_dir);
 void		ch_oldpwd_case(t_list **env, char *cur_dir);
-void		is_execute(t_list **env, char **tokens, char **environ);
-void		direct_execute(t_list **env, char **tokens, char **environ);
-bool		is_built_in(char **args, t_envs *envs);
-bool		handler_var(t_list **env, char *word, int size);
+void		is_execute(t_list **env, char **args, char **environ);
+void		direct_execute(t_list **env, char **args, char **environ);
+bool		is_built_in(t_cmd *cmd, t_envs *envs);
 
 char		*find_command_in_path(char *command, t_list *env);
 char		*check_direct_path(char *command);
