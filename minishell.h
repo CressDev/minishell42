@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/10 18:38:13 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/12 20:31:45 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,6 +244,7 @@ void			token_redirect(t_cmd *current, t_token *token);
 
 t_cmd			*init_cmd(t_envs *envs);
 t_cmd			*parse_tokens(t_token *token, t_envs *envs);
+int				setup_all_heredocs(t_cmd *cmd, int is_tty);
 
 void		free_redirect(t_cmd *cmd);
 void		restore_fds(int saved_stdin, int saved_stdout, int input_fd,
@@ -251,7 +252,6 @@ void		restore_fds(int saved_stdin, int saved_stdout, int input_fd,
 void		execute_redir(t_cmd *cmd, t_envs *envs, int is_tty);
 int			setup_input_redirect(t_cmd *cmd);
 int			setup_output_redirect(t_cmd *cmd);
-int			setup_heredoc(char *delimiter, int is_tty);
 
 void		close_unused_pipe_child(t_cmd *current, int *prev_fd, int pipefd[2],
 				int *out_fd);
@@ -261,8 +261,6 @@ void		execute_pipeline_child(t_cmd *cmd, int input_fd, int output_fd,
 void		setup_pipe_redirections(int input_fd, int output_fd);
 void		setup_file_redirections(t_cmd *cmd, int file_fd, int is_tty);
 void		free_pipeline(t_cmd *cmd_list);
-int			execute_single_pipe_cmd(t_cmd *current, int *prev_fd, int pipefd[2],
-				t_exec_data *exec_data);
 t_pipeinfo	setup_pipeline(int *prev_fd, int pipefd[2]);
 
 int			get_in_readline_state(void);
@@ -286,9 +284,8 @@ void		cd_command(t_list **env, char **tokens);
 void		ch_dir(t_list **env, char *cur_dir, char *path);
 void		chenv(t_list **env, char *new_dir, char *cur_dir);
 void		ch_oldpwd_case(t_list **env, char *cur_dir);
-void		is_execute(t_list **env, char **args, char **environ);
 void		direct_execute(t_list **env, char **args, char **environ);
-bool		is_built_in(t_cmd *cmd, t_envs *envs);
+bool		is_built_in(t_cmd *cmd);
 
 char		*find_command_in_path(char *command, t_list *env);
 char		*check_direct_path(char *command);

@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:47:40 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/10 17:55:17 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/12 16:57:45 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,30 @@ static int	add_arg(t_cmd *cmd, char *arg)
 	free(cmd->args);
 	cmd->args = new_args;
 	cmd->argc++;
+	return (0);
+}
+
+static int	add_heredoc(t_cmd *cmd, char *delimeter)
+{
+	char	**new;
+	int		i;
+	int		j;
+
+	i = 0;
+	if (cmd->heredoc_delimiter)
+		while (cmd->heredoc_delimiter[i])
+			i++;
+	new = ft_calloc(i + 2, sizeof(char *));
+	if (!new)
+		return (-1);
+	j = 0;
+	while (j < i)
+		new[j++] = cmd->heredoc_delimiter[i];
+	new[i] = ft_strdup(delimeter);
+	if (!new[i])
+		return (free(new), -1);
+	free(cmd->heredoc_delimiter);
+	cmd->heredoc_delimiter = new;
 	return (0);
 }
 
@@ -79,7 +103,9 @@ void	token_redirect(t_cmd *current, t_token *token)
 	}
 	else if (token->type == TOKEN_HEREDOC)
 	{
-		current->heredoc_delimiter = ft_strdup(token->next->content);
-		current->is_heredoc = 1;
+		if (!token->next || token->next->type != TOKEN_WORD)
+			return (syntax_error());
+		if (add_heredoc(current, token->next->content) == -1)
+			return (malloc_error());
 	}
 }

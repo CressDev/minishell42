@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex2.c                                           :+:      :+:    :+:   */
+/*   cmd_execution.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 10:15:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/10 17:15:47 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/12 19:15:03 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	setup_file_redirections(t_cmd *cmd, int file_fd, int is_tty)
 	if (cmd->is_heredoc || cmd->input_file)
 	{
 		if (cmd->is_heredoc)
-			file_fd = setup_heredoc(cmd->heredoc_delimiter, is_tty);
+			file_fd = setup_all_heredocs(cmd, is_tty);
 		else
 			file_fd = setup_input_redirect(cmd);
 		if (file_fd != -1)
@@ -92,7 +92,7 @@ void	execute_pipeline_child(t_cmd *cmd, int input_fd, int output_fd,
 	file_fd = -1;
 	setup_pipe_redirections(input_fd, output_fd);
 	setup_file_redirections(cmd, file_fd, exec_data->is_tty);
-	if (is_built_in(cmd->args, cmd->envs))
+	if (is_built_in(cmd))
 		exit(g_signal);
 	else
 		direct_execute(cmd->envs->env, cmd->args, cmd->envs->environ);

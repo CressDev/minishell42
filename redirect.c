@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:00:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/10 18:40:19 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/12 20:39:39 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	restore_fds(int saved_stdin, int saved_stdout, int input_fd,
 	if (output_fd != -1)
 		close(output_fd);
 }
-
 
 int	setup_input_redirect(t_cmd *cmd)
 {
@@ -79,7 +78,7 @@ void	execute_redir(t_cmd *cmd, t_envs *envs, int is_tty)
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	if (cmd->is_heredoc)
-		input_fd = setup_heredoc(cmd->heredoc_delimiter, is_tty);
+		input_fd = setup_all_heredocs(cmd, is_tty);
 	else
 		input_fd = setup_input_redirect(cmd);
 	output_fd = setup_output_redirect(cmd);
@@ -93,7 +92,7 @@ void	execute_redir(t_cmd *cmd, t_envs *envs, int is_tty)
 		dup2(input_fd, STDIN_FILENO);
 	if (output_fd != -1)
 		dup2(output_fd, STDOUT_FILENO);
-	if (!is_built_in(cmd, cmd->envs))
-		is_execute(envs->env, cmd->args, envs->environ);
+	if (!is_built_in(cmd))
+		is_execute(cmd);
 	restore_fds(saved_stdin, saved_stdout, input_fd, output_fd);
 }

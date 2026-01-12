@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 09:34:50 by cress             #+#    #+#             */
-/*   Updated: 2025/12/28 23:42:18 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/12 18:40:41 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,29 @@ int	setup_heredoc(char *delimiter, int is_tty)
 	close(pipefd[1]);
 	signal(SIGINT, signal_handler);
 	return (pipefd[0]);
+}
+
+int	setup_all_heredocs(t_cmd *cmd, int is_tty)
+{
+	int	fd;
+	int	last_fd;
+	int	i;
+
+	i = 0;
+	last_fd = -1;
+	while (cmd->heredoc_delimiter[i])
+	{
+		fd = setup_heredoc(cmd->heredoc_delimiter[i], is_tty);
+		if (fd == -1)
+		{
+			if (last_fd != -1)
+				close(last_fd);
+			return (-1);
+		}
+		if (last_fd == -1)
+			close(last_fd);
+		last_fd = fd;
+		i++;
+	}
+	return (last_fd);
 }

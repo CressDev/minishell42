@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:52:04 by cress             #+#    #+#             */
-/*   Updated: 2026/01/10 17:20:46 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/12 17:39:19 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,6 @@ void	execute_pipeline(t_cmd *cmd, int is_tty)
 	int			prev_fd;
 	t_exec_data	exec_data;
 
-	if (!cmd->next)
-		return (exec_redir(cmd, is_tty));
 	exec_data.is_tty = is_tty;
 	exec_data.last_child_pid = -1;
 	prev_fd = -1;
