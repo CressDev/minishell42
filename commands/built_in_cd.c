@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amonteag <amonteag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 21:06:15 by cress             #+#    #+#             */
-/*   Updated: 2025/12/29 11:36:06 by amonteag         ###   ########.fr       */
+/*   Updated: 2026/01/13 21:04:27 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ch_dir(t_list **env, char *cur_dir, char *path)
 	chenv(env, path, cur_dir);
 }
 
-void	ch_some_cases(t_list **env, char *cur_dir, int cases)
+void	ch_cases(t_list **env, char *cur_dir, int cases)
 {
 	char	*new_dir;
 
@@ -72,7 +72,7 @@ void	ch_some_cases(t_list **env, char *cur_dir, int cases)
 		ch_oldpwd_case(env, cur_dir);
 }
 
-void	ch_parent_dir(t_list **env, char *cur_dir)
+void	ch_parent(t_list **env, char *cur_dir)
 {
 	char	*new_dir;
 	char	*last_slash;
@@ -94,7 +94,7 @@ void	ch_parent_dir(t_list **env, char *cur_dir)
 	free(new_dir);
 }
 
-void	cd_command(t_list **env, char **tokens)
+void	cd_command(t_cmd *cmd)
 {
 	char	*cur_dir;
 	char	*env_pwd;
@@ -102,7 +102,7 @@ void	cd_command(t_list **env, char **tokens)
 	cur_dir = getcwd(NULL, 0);
 	if (!cur_dir)
 	{
-		env_pwd = get_value(*env, "PWD=");
+		env_pwd = get_value(*cmd->envs->env, "PWD=");
 		if (env_pwd)
 			cur_dir = ft_strdup(env_pwd);
 		else
@@ -110,15 +110,15 @@ void	cd_command(t_list **env, char **tokens)
 		if (!cur_dir)
 			return (perror("malloc"), g_signal = 1, (void)0);
 	}
-	if (ft_count(tokens) > 2)
+	if (ft_count(cmd->args) > 2)
 		return (write(2, "cd: too many arguments\n", 24), free(cur_dir),
 			g_signal = 1, (void)0);
-	if (!tokens[1] || (tokens[1] && tokens[1][0] == '~'))
-		return (ch_some_cases(env, cur_dir, 0), free(cur_dir), (void)0);
-	else if (ft_strcmp(tokens[1], "..") == 0)
-		return (ch_parent_dir(env, cur_dir), free(cur_dir), (void)0);
-	else if (tokens[1][0] == '-')
-		return (ch_some_cases(env, cur_dir, 1), free(cur_dir), (void)0);
+	if (!cmd->args[1] || (cmd->args[1] && cmd->args[1][0] == '~'))
+		return (ch_cases(cmd->envs->env, cur_dir, 0), free(cur_dir), (void)0);
+	else if (ft_strcmp(cmd->args[1], "..") == 0)
+		return (ch_parent(cmd->envs->env, cur_dir), free(cur_dir), (void)0);
+	else if (cmd->args[1][0] == '-')
+		return (ch_cases(cmd->envs->env, cur_dir, 1), free(cur_dir), (void)0);
 	else
-		return (ch_dir(env, cur_dir, tokens[1]), free(cur_dir), (void)0);
+		return (ch_dir(cmd->envs->env, cur_dir, cmd->args[1]), free(cur_dir), (void)0);
 }

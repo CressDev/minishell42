@@ -27,7 +27,7 @@ bool	handler_var(t_list **env, char *word, int size)
 		size++;
 	while (current)
 	{
-		if (ft_strncmp(current->content, word, size + 1) == 0)
+		if (ft_strncmp((char *)current->content, word, size + 1) == 0)
 		{
 			old_content = current->content;
 			current->content = new_content;
@@ -77,14 +77,14 @@ void	order_env(t_list *env)
 	}
 }
 
-void	export_command(t_list **env, t_cmd *cmd)
+void	export_command(t_cmd *cmd)
 {
 	t_list	*current;
 	int		i;
 
 	if (cmd->argc == 1)
 	{
-		current = *env;
+		current = *cmd->envs->env;
 		order_env(current);
 		while(current)
 		{
@@ -97,8 +97,8 @@ void	export_command(t_list **env, t_cmd *cmd)
 		i = 1;
 		while (i < cmd->argc)
 		{
-			if (!handler_var(env, cmd->args[i], 0))
-				add_new_var(env, cmd->args[i]);
+			if (!handler_var(cmd->envs->env, cmd->args[i], 0))
+				add_new_var(cmd->envs->env, cmd->args[i]);
 			i++;
 		}
 	}

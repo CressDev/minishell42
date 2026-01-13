@@ -6,13 +6,13 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:04:20 by cress             #+#    #+#             */
-/*   Updated: 2026/01/10 18:12:11 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/13 20:12:45 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	is_valid_number(char *str)
+static bool	is_valid_number(char *str)
 {
 	int	i;
 
@@ -30,22 +30,22 @@ bool	is_valid_number(char *str)
 	return (true);
 }
 
-void	exit_command(char **tokens)
+void	exit_command(t_cmd *cmd)
 {
 	int	exit_code;
 	int	arg_count;
 
-	arg_count = ft_count(tokens);
+	arg_count = ft_count(cmd->args);
 	if (arg_count == 1)
 		exit_code = g_signal;
 	else if (arg_count == 2)
 	{
-		if (is_valid_number(tokens[1]))
-			exit_code = ft_atoi(tokens[1]);
+		if (is_valid_number(cmd->args[1]))
+			exit_code = ft_atoi(cmd->args[1]);
 		else
 		{
 			write(STDERR_FILENO, "exit: ", 7);
-			write(STDERR_FILENO, tokens[1], ft_strlen(tokens[1]));
+			write(STDERR_FILENO, cmd->args[1], ft_strlen(cmd->args[1]));
 			write(STDERR_FILENO, ": numeric argument required\n", 28);
 			exit(2);
 		}

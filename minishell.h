@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/12 20:31:45 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/13 21:25:02 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,7 +249,7 @@ int				setup_all_heredocs(t_cmd *cmd, int is_tty);
 void		free_redirect(t_cmd *cmd);
 void		restore_fds(int saved_stdin, int saved_stdout, int input_fd,
 				int output_fd);
-void		execute_redir(t_cmd *cmd, t_envs *envs, int is_tty);
+void			execute_redir(t_cmd *cmd, int is_tty);
 int			setup_input_redirect(t_cmd *cmd);
 int			setup_output_redirect(t_cmd *cmd);
 
@@ -274,17 +274,17 @@ void		signal_ctlc_continuation(int sig);
 void		free_mem(char **str);
 void		commands_parse_execution(t_token **tokens, t_envs *envs, int is_tty);
 
-void		env_command(t_list *env, char **args);
+void		env_command(t_cmd *cmd);
 void		pwd_command(void);
-void		exit_command(char **tokens);
-void		unset_command(t_list **env, char **tokens);
-void		export_command(t_list **env, t_cmd *cmd);
+void		exit_command(t_cmd *cmd);
+void		unset_command(t_cmd *cmd);
+void		export_command(t_cmd *cmd);
 void		echo_command(t_cmd *cmd);
-void		cd_command(t_list **env, char **tokens);
+void		cd_command(t_cmd *cmd);
 void		ch_dir(t_list **env, char *cur_dir, char *path);
 void		chenv(t_list **env, char *new_dir, char *cur_dir);
 void		ch_oldpwd_case(t_list **env, char *cur_dir);
-void		direct_execute(t_list **env, char **args, char **environ);
+void		direct_execute(t_cmd *cmd);
 bool		is_built_in(t_cmd *cmd);
 
 char		*find_command_in_path(char *command, t_list *env);

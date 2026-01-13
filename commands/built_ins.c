@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 21:03:47 by cress             #+#    #+#             */
-/*   Updated: 2026/01/09 22:05:04 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/13 20:43:39 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	is_delete_env(t_list **env, t_list *cur, char *tokens, t_list *prev)
 	int	size;
 
 	size = ft_strlen(tokens);
-	if (ft_strncmp(cur->content, tokens, size) == 0)
+	if (ft_strncmp((char *)cur->content, tokens, size) == 0)
 	{
 		if (prev == NULL)
 			*env = cur->next;
@@ -47,22 +47,22 @@ bool	is_delete_env(t_list **env, t_list *cur, char *tokens, t_list *prev)
 	return (false);
 }
 
-void	unset_command(t_list **env, char **tokens)
+void	unset_command(t_cmd *cmd)
 {
 	t_list	*cur;
 	t_list	*prev;
 	int		i;
 
-	if (ft_count(tokens) == 1)
+	if (ft_count(cmd->args) == 1)
 		return (g_signal = 0, (void)0);
 	i = 1;
-	while (i < ft_count(tokens))
+	while (i < ft_count(cmd->args))
 	{
-		cur = *env;
+		cur = *cmd->envs->env;
 		prev = NULL;
 		while (cur)
 		{
-			if (is_delete_env(env, cur, tokens[i], prev))
+			if (is_delete_env(cmd->envs->env, cur, cmd->args[i], prev))
 				break ;
 			prev = cur;
 			cur = cur->next;
@@ -72,14 +72,14 @@ void	unset_command(t_list **env, char **tokens)
 	g_signal = 0;
 }
 
-void	env_command(t_list *env, char **args)
+void	env_command(t_cmd *cmd)
 {
 	t_list	*cur;
 
-	if (ft_count(args) > 1)
+	if (ft_count(cmd->args) > 1)
 		return (ft_printf("env: %s: The file or directory does not exit"),
 			g_signal = 127, (void)0);
-	cur = env;
+	cur = *cmd->envs->env;
 	while (cur)
 	{
 		if (cur->content)

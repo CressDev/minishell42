@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:00:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/12 20:39:39 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/13 17:03:25 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	setup_output_redirect(t_cmd *cmd)
 	return (output_fd);
 }
 
-void	execute_redir(t_cmd *cmd, t_envs *envs, int is_tty)
+void	execute_redir(t_cmd *cmd, int is_tty)
 {
 	int	saved_stdin;
 	int	saved_stdout;
@@ -93,6 +93,6 @@ void	execute_redir(t_cmd *cmd, t_envs *envs, int is_tty)
 	if (output_fd != -1)
 		dup2(output_fd, STDOUT_FILENO);
 	if (!is_built_in(cmd))
-		is_execute(cmd);
+		direct_execute(cmd);
 	restore_fds(saved_stdin, saved_stdout, input_fd, output_fd);
 }

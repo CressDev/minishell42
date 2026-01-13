@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 10:15:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/12 19:15:03 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/13 17:05:09 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,5 @@ void	execute_pipeline_child(t_cmd *cmd, int input_fd, int output_fd,
 	if (is_built_in(cmd))
 		exit(g_signal);
 	else
-		direct_execute(cmd->envs->env, cmd->args, cmd->envs->environ);
+		direct_execute(cmd);
 }
