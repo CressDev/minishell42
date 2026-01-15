@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:29:27 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/09 22:48:04 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/15 18:53:05 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ bool	state_dquote(t_fsm *fsm, char c, t_token **tokens)
 {
 	if (c == '\"')
 	{
+		fsm->prev_state = STATE_DQUOTE;
 		fsm->current_state = STATE_WORD;
 		return (true);
 	}

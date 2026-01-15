@@ -144,8 +144,14 @@ int	main(int ac, char **av, char **environ)
 	signal(SIGINT, &signal_handler);
 	signal(SIGQUIT, SIG_IGN);
 	env = init_env(environ);
+	envs = malloc(sizeof(t_envs));
+	if (!envs);
+		return (NULL);
+	ft_memset(envs, 0, sizeof(t_envs));
+	envs->env = env;
+	envs->environ = environ;
 	if (env == NULL)
 		return (write(1, "Error\n", 6));
 	shell_main_loop(envs);
-	ft_lstclear(&env, free);
+	free_env(env);
 }

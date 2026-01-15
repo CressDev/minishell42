@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:13:57 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/09 18:08:07 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/15 20:54:08 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,21 @@ t_token_type	fsm_state_to_token_type(t_fsm *fsm)
 	return (TOKEN_WORD);
 }
 
-void	create_token(t_fsm *fsm, t_token **tokens, int quoted)
+void	create_token(t_fsm *fsm, t_token **tokens)
 {
 	t_token	*new;
+	int		quote;
 
 	if (fsm->i_token == 0)
 		return ;
 	fsm->token[fsm->i_token] = '\0';
-	new = init_token(fsm, quoted);
+	if (fsm->prev_state == STATE_DQUOTE)
+		quote = 2;
+	else if (fsm->prev_state == STATE_SQUOTE)
+		quote = 1;
+	else
+		quote = 0;
+	new = init_token(fsm, quote);
 	if (!new)
 	{
 		new = NULL;
@@ -72,16 +79,4 @@ void	create_token(t_fsm *fsm, t_token **tokens, int quoted)
 	token_add_back(tokens, new);
 	fsm->i_token = 0;
 	fsm->token[0] = 0;
-}
-
-void	destroy_fsm(t_fsm **fsm)
-{
-	if (!fsm || !*fsm)
-		return ;
-	free((*fsm)->input);
-	free((*fsm)->token);
-	(*fsm)->input = NULL;
-	(*fsm)->token = NULL;
-	free(*fsm);
-	*fsm = NULL;
 }

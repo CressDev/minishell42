@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 22:31:48 by cress             #+#    #+#             */
-/*   Updated: 2026/01/13 21:24:30 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/15 21:03:33 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,13 @@ void	commands_parse_execution(t_token **tokens, t_envs *envs, int is_tty)
 	while (current)
 	{
 		if (current->next)
-		{
 			execute_pipeline(cmd, is_tty);
-			free_pipeline(cmd);
-		}
 		else if (current->input_file || current->output_file
 			|| current->is_heredoc)
-		{
 			execute_redir(cmd, is_tty);
-			free_redirect(cmd);
-		}
 		else if (!is_built_in(current))
 			direct_execute(cmd);
 		current = current->next;
 	}
+	free_cmd_start(cmd);
 }
