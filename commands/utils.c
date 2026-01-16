@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 11:10:15 by amonteag          #+#    #+#             */
-/*   Updated: 2026/01/16 12:31:37 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/16 20:30:53 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "fsm_args_helper.c"
 
 char	*get_var_name_with_eq(char *raw_token, int start, int end)
 {
@@ -117,9 +118,20 @@ t_cmd	*parse_tokens(t_token *token, t_envs *envs)
 			current = token_pipe(envs, current);
 		else if (token->type == TOKEN_REDIR_IN || token->type == TOKEN_REDIR_OUT
 			|| token->type == TOKEN_APPEND || token->type == TOKEN_HEREDOC)
+		{
 			token_redirect(current, token);
+			if (token->next)
+				token = token->next;
+		}
 		expand_token(token, envs);
 		token = token->next;
+	}
+	// --- INTEGRACIÓN DE LA LÓGICA CLÁSICA ---
+	if (head)
+	{
+		int argc = count_args_no_redirect_fsm(token);
+		head->args = ft_calloc(argc + 1, sizeof(char *));
+		fill_args_array_fsm(head, token);
 	}
 	return (head);
 }

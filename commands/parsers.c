@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:47:40 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/16 12:31:13 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/16 19:36:58 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,19 +88,25 @@ t_cmd	*token_pipe(t_envs *envs, t_cmd *current)
 
 void	token_redirect(t_cmd *current, t_token *token)
 {
+	int fd;
+
 	if (!current || !token || !token->next)
 		return ;
 	if (token->type == TOKEN_REDIR_IN)
 		current->input_file = ft_strdup(token->next->content);
-	else if (token->type == TOKEN_REDIR_OUT)
+	else if (token->type == TOKEN_REDIR_OUT || token->type == TOKEN_APPEND)
 	{
+		if (current->output_file)
+		{
+			fd = open(current->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (fd != -1)
+				close(fd);
+			free(current->output_file);
+		}
 		current->output_file = ft_strdup(token->next->content);
 		current->append = 0;
-	}
-	else if (token->type == TOKEN_APPEND)
-	{
-		current->output_file = ft_strdup(token->next->content);
-		current->append = 1;
+		if (token->type == TOKEN_APPEND)
+			current->append = 1;
 	}
 	else if (token->type == TOKEN_HEREDOC)
 	{
