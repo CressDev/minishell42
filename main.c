@@ -128,6 +128,7 @@ static void	shell_main_loop(t_envs *envs)
 		add_history(line);
 		commands_parse_execution(&tokens, envs, is_tty);
 		free_tokens(&tokens);
+		free(line);
 	}
 }
 
@@ -154,4 +155,5 @@ int	main(int ac, char **av, char **environ)
 		return (write(1, "Error\n", 6));
 	shell_main_loop(envs);
 	free_env(env);
+	free(envs);
 }
