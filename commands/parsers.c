@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:47:40 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/12 16:57:45 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/16 11:16:26 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ void	token_redirect(t_cmd *current, t_token *token)
 	else if (token->type == TOKEN_HEREDOC)
 	{
 		if (!token->next || token->next->type != TOKEN_WORD)
-			return (syntax_error());
+			write(STDIN_FILENO, "Syntax error.\n", 15);
 		if (add_heredoc(current, token->next->content) == -1)
-			return (malloc_error());
+			write(STDIN_FILENO, "Malloc error", 13);
 	}
 }

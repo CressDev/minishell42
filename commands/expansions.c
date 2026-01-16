@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 20:45:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/15 20:09:10 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/16 11:14:25 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static char *join_char(char *res, char c)
 	if (!res)
 		return (NULL);
 	len = ft_strlen(res);
-	new = malloc(i + 2);
+	new = malloc(len + 2);
 	if (!new)
 		return (free(res), NULL);
 	i = 0;

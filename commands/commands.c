@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 22:31:48 by cress             #+#    #+#             */
-/*   Updated: 2026/01/15 21:03:33 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/16 11:13:08 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,5 @@ void	commands_parse_execution(t_token **tokens, t_envs *envs, int is_tty)
 			direct_execute(cmd);
 		current = current->next;
 	}
-	free_cmd_start(cmd);
+	free_cmd_start(&cmd);
 }

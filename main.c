@@ -118,7 +118,7 @@ static void	shell_main_loop(t_envs *envs)
 	{
 		g_signal = 0;
 		tokens = NULL;
-		line = read_input(envs, is_tty);
+		line = read_input(*envs->env, is_tty);
 		if (handle_eof(line, is_tty))
 			break ;
 		if (handle_interrupt(line))
@@ -145,8 +145,8 @@ int	main(int ac, char **av, char **environ)
 	signal(SIGQUIT, SIG_IGN);
 	env = init_env(environ);
 	envs = malloc(sizeof(t_envs));
-	if (!envs);
-		return (NULL);
+	if (!envs)
+		return (1);
 	ft_memset(envs, 0, sizeof(t_envs));
 	envs->env = env;
 	envs->environ = environ;

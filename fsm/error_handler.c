@@ -6,13 +6,13 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 18:54:59 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/09 23:26:13 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/16 11:20:14 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	error_handler(t_fsm *fsm, const char *line)
+void	error_user_input(t_fsm *fsm, const char *line)
 {
 	char	*extra;
 	char	*new_input;

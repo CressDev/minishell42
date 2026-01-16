@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:56:09 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/09 20:37:08 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/16 11:21:57 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool	state_redirect(t_fsm *fsm, char c, t_token **tokens)
 		state_error(fsm, c, NULL);
 		return (false);
 	}
-	create_token(fsm, tokens, 0);
+	create_token(fsm, tokens);
 	if (!error_handler(fsm))
 		return (false);
 	fsm->current_state = STATE_START;

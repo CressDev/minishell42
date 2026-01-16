@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/15 21:01:23 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/16 11:27:06 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,6 @@ typedef struct s_pipeinfo
 	int				pipefd[2];
 }	t_pipeinfo;
 
-t_list			**init_env(char **environ);
 bool			handle_eof(char *line, int is_tty);
 bool			handle_interrupt(char *line);
 bool			obtain_tokens(char *line, t_token **tokens);
@@ -227,7 +226,7 @@ bool			state_pipe(t_fsm *fsm, char c, t_token **tokens);
 bool			state_end(t_fsm *fsm, char c, t_token **tokens);
 bool			state_redirect(t_fsm *fsm, char c, t_token **tokens);
 bool			state_error(t_fsm *fsm, char c, t_token **tokens);
-void			error_handler(t_fsm *fsm, const char *line);
+void			error_user_input(t_fsm *fsm, const char *line);
 void			default_state(t_fsm *fsm);
 void			create_token(t_fsm *fsm, t_token **tokens);
 
@@ -282,6 +281,8 @@ void			chenv(t_list **env, char *new_dir, char *cur_dir);
 void			ch_oldpwd_case(t_list **env, char *cur_dir);
 void			direct_execute(t_cmd *cmd);
 bool			is_built_in(t_cmd *cmd);
+bool			handler_var(t_list **env, char *word, int size);
+void			add_new_var(t_list **env, char *word);
 
 char			*find_command_in_path(char *command, t_list *env);
 char			*check_direct_path(char *command);
@@ -290,7 +291,6 @@ char			*get_value(t_list *lst, char *str);
 char			*create_double_operator_token(char operator);
 char			*create_single_operator_token(char operator);
 
-char			*expand_variable(char *str, int *pos, t_list *env);
 char			*handle_special_vars(char *str, int *pos);
 char			*extract_var_value(char *str, int start, int end, t_list *env);
 char			*get_var_name_with_eq(char *str, int start, int end);

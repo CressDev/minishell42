@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 18:24:20 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/10 18:29:14 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/16 11:12:33 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static int	print_commands(t_cmd *cmd, int *i)
 			ft_printf(" ");
 		(*i)++;
 	}
+	return (0);
 }
 
 void	echo_command(t_cmd *cmd)
