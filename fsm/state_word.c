@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:44:40 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/16 14:10:13 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/16 14:22:56 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 static void	quote_state(t_fsm *fsm, t_state state, t_token **tokens)
 {
+	char	c;
+
 	if (fsm->has_content)
 	{
 		create_token(fsm, tokens);
 		fsm->has_content = false;
 	}
-	if (fsm->input[fsm->counter + 1] != '\0')
+	c = fsm->input[fsm->i_input + 1];
+	if (c != '\0')
 	{
 		if (state == STATE_DQUOTE)
 			fsm->current_state = STATE_DQUOTE;
