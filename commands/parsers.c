@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:47:40 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/16 11:16:26 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/16 12:31:13 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int	add_arg(t_cmd *cmd, char *arg)
 {
 	char	**new_args;
 	int		i;
+	int		j;
 
 	i = 0;
 	if (cmd->args)
@@ -26,17 +27,17 @@ static int	add_arg(t_cmd *cmd, char *arg)
 	new_args = ft_calloc(i + 2, sizeof(char *));
 	if (!new_args)
 		return (-1);
-	while (cmd->args && cmd->args[i])
+	j = 0;
+	while (cmd->args && j < i)
 	{
-		new_args[i] = cmd->args[i];
-		i++;
+		new_args[j] = cmd->args[j];
+		j++;
 	}
 	new_args[i] = ft_strdup(arg);
 	if (!new_args[i])
 		return (free(new_args), -1);
 	free(cmd->args);
 	cmd->args = new_args;
-	cmd->argc++;
 	return (0);
 }
 

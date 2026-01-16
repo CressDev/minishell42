@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 11:10:15 by amonteag          #+#    #+#             */
-/*   Updated: 2026/01/16 11:17:38 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/16 12:31:37 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ t_cmd	*parse_tokens(t_token *token, t_envs *envs)
 			current = token_word(current, token, envs);
 			if (!head)
 				head = current;
+			current->argc++;
 		}
 		else if (token->type == TOKEN_PIPE)
 			current = token_pipe(envs, current);
