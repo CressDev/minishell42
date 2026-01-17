@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:33:52 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/17 18:17:24 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/17 18:47:57 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,28 @@
 
 static bool	inner_quote(t_fsm *fsm, char c, char quote_type)
 {
-	if (c == quote_type)
+	if (c != quote_type)
+		return (false);
+	if (!fsm->quote_flag)
 	{
-		fsm->quote_flag = !fsm->quote_flag;
-		if (quote_type == '\'')
-			fsm->prev_state = STATE_SQUOTE;
-		else
+		if ((quote_type == '\"' && fsm->prev_state == STATE_DQUOTE)
+			|| (quote_type == '\'' && fsm->prev_state == STATE_SQUOTE))
+			return (true);
+		fsm->quote_flag = true;
+		if (quote_type == '\"')
 			fsm->prev_state = STATE_DQUOTE;
+		else
+			fsm->prev_state = STATE_SQUOTE;
+		return (true);
+	}
+	if (fsm->quote_flag)
+	{
+		fsm->quote_flag = false;
+		fsm->current_state = STATE_WORD;
+		if (quote_type == '\"')
+			fsm->prev_state = STATE_DQUOTE;
+		else
+			fsm->prev_state = STATE_SQUOTE;
 		return (true);
 	}
 	return (false);
