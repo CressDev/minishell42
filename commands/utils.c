@@ -6,12 +6,11 @@
 /*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 11:10:15 by amonteag          #+#    #+#             */
-/*   Updated: 2026/01/17 08:00:09 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/17 19:35:53 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "fsm_args_helper.c"
 
 char	*get_var_name_with_eq(char *raw_token, int start, int end)
 {
@@ -128,20 +127,63 @@ t_cmd	*parse_tokens(t_token *token, t_envs *envs)
 		expand_token(token, envs);
 		token = token->next;
 	}
-	// --- INTEGRACIÓN DE LA LÓGICA CLÁSICA ---
-	if (head)
-	{
-		int argc = count_args_no_redirect_fsm(token_list);
-		head->args = ft_calloc(argc + 1, sizeof(char *));
-		fill_args_array_fsm(head, token_list);
+	// --- ASIGNA ARGUMENTOS Y HEREDOCS A CADA COMANDO DE LA PIPELINE ---
+	t_cmd *cmd_iter = head;
+	t_token *tok_iter = token_list;
+	while (cmd_iter) {
+		t_token *start = tok_iter;
+		t_token *end = tok_iter;
+		// Busca el final del segmento (pipe o NULL)
+		while (end && end->type != TOKEN_PIPE)
+			end = end->next;
 
-		int hcount = count_heredoc_delims_fsm(token_list);
-		if (hcount > 0)
-		{
-			head->heredoc_delimiter = ft_calloc(hcount + 1, sizeof(char *));
-			fill_heredoc_delims_fsm(head, token_list);
-			head->is_heredoc = 1;
+		// Helpers modificados para aceptar rango [start, end)
+		int argc = 0;
+		int hcount = 0;
+		t_token *tmp = start;
+		t_token *prev = NULL;
+		while (tmp != end) {
+			if (tmp->type == TOKEN_WORD && (!prev || (prev->type != TOKEN_REDIR_IN && prev->type != TOKEN_REDIR_OUT && prev->type != TOKEN_APPEND && prev->type != TOKEN_HEREDOC)))
+				argc++;
+			prev = tmp;
+			tmp = tmp->next;
 		}
+		cmd_iter->args = ft_calloc(argc + 1, sizeof(char *));
+		tmp = start;
+		prev = NULL;
+		int i = 0;
+		while (tmp != end) {
+			if (tmp->type == TOKEN_WORD && (!prev || (prev->type != TOKEN_REDIR_IN && prev->type != TOKEN_REDIR_OUT && prev->type != TOKEN_APPEND && prev->type != TOKEN_HEREDOC)))
+				cmd_iter->args[i++] = ft_strdup(tmp->content);
+			prev = tmp;
+			tmp = tmp->next;
+		}
+		cmd_iter->args[i] = NULL;
+
+		tmp = start;
+		while (tmp != end) {
+			if (tmp->type == TOKEN_HEREDOC && tmp->next && tmp->next->type == TOKEN_WORD)
+				hcount++;
+			tmp = tmp->next;
+		}
+		if (hcount > 0) {
+			cmd_iter->heredoc_delimiter = ft_calloc(hcount + 1, sizeof(char *));
+			tmp = start;
+			i = 0;
+			while (tmp != end) {
+				if (tmp->type == TOKEN_HEREDOC && tmp->next && tmp->next->type == TOKEN_WORD)
+					cmd_iter->heredoc_delimiter[i++] = ft_strdup(tmp->next->content);
+				tmp = tmp->next;
+			}
+			cmd_iter->heredoc_delimiter[i] = NULL;
+			cmd_iter->is_heredoc = 1;
+		}
+
+		if (end && end->type == TOKEN_PIPE)
+			tok_iter = end->next;
+		else
+			tok_iter = end;
+		cmd_iter = cmd_iter->next;
 	}
-	return (head);
+	return head;
 }
