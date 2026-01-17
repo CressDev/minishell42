@@ -6,7 +6,7 @@
 /*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 20:30:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/16 20:30:00 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/17 07:47:29 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,3 +49,33 @@ void fill_args_array_fsm(t_cmd *cmd, t_token *token)
 // int argc = count_args_no_redirect_fsm(token_list);
 // cmd->args = ft_calloc(argc + 1, sizeof(char *));
 // fill_args_array_fsm(cmd, token_list);
+
+// Cuenta los delimitadores de heredoc (<<) en la lista de tokens
+int count_heredoc_delims_fsm(t_token *token)
+{
+    int count = 0;
+    while (token)
+    {
+        if (token->type == TOKEN_HEREDOC && token->next && token->next->type == TOKEN_WORD)
+            count++;
+        token = token->next;
+    }
+    return count;
+}
+
+// Rellena el array de delimitadores de heredoc en cmd
+void fill_heredoc_delims_fsm(t_cmd *cmd, t_token *token)
+{
+    int i = 0;
+    while (token)
+    {
+        if (token->type == TOKEN_HEREDOC && token->next && token->next->type == TOKEN_WORD)
+        {
+            cmd->heredoc_delimiter[i] = ft_strdup(token->next->content);
+            i++;
+        }
+        token = token->next;
+    }
+    if (cmd->heredoc_delimiter)
+        cmd->heredoc_delimiter[i] = NULL;
+}

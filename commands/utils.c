@@ -6,7 +6,7 @@
 /*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 11:10:15 by amonteag          #+#    #+#             */
-/*   Updated: 2026/01/16 20:30:53 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/17 08:00:09 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,11 @@ t_cmd	*parse_tokens(t_token *token, t_envs *envs)
 {
 	t_cmd	*head;
 	t_cmd	*current;
+	t_token *token_list;
 
 	head = NULL;
 	current = NULL;
+	token_list = token; // Guardar el inicio de la lista
 	while (token)
 	{
 		if (token->type == TOKEN_WORD)
@@ -129,9 +131,17 @@ t_cmd	*parse_tokens(t_token *token, t_envs *envs)
 	// --- INTEGRACIÓN DE LA LÓGICA CLÁSICA ---
 	if (head)
 	{
-		int argc = count_args_no_redirect_fsm(token);
+		int argc = count_args_no_redirect_fsm(token_list);
 		head->args = ft_calloc(argc + 1, sizeof(char *));
-		fill_args_array_fsm(head, token);
+		fill_args_array_fsm(head, token_list);
+
+		int hcount = count_heredoc_delims_fsm(token_list);
+		if (hcount > 0)
+		{
+			head->heredoc_delimiter = ft_calloc(hcount + 1, sizeof(char *));
+			fill_heredoc_delims_fsm(head, token_list);
+			head->is_heredoc = 1;
+		}
 	}
 	return (head);
 }
