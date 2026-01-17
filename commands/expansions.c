@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 20:45:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/16 11:14:25 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/17 16:17:00 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static char *join_char(char *res, char c)
 	return (new);
 }
 
-static char	*expand_string(char *content, t_list **env)
+static char	*expand_string(char *content, t_list **env, int quote)
 {
 	char	*res;
 	int		i;
@@ -83,10 +83,15 @@ static char	*expand_string(char *content, t_list **env)
 	i = 0;
 	while (content[i])
 	{
-		if (content[i] == '$')
-			res = join_and_free(res, expand_variable(content, &i, *env));
-		else
+		if (quote == 1)
 			res = join_char(res, content[i++]);
+		else
+		{
+			if (content[i] == '$')
+				res = join_and_free(res, expand_variable(content, &i, *env));
+			else
+				res = join_char(res, content[i++]);
+		}
 	}
 	return (res);
 }
@@ -97,7 +102,7 @@ void	expand_token(t_token *token, t_envs *envs)
 
 	if (token->quote == 1)
 		return ;
-	new = expand_string(token->content, envs->env);
+	new = expand_string(token->content, envs->env, token->quote);
 	if (!new)
 		return ;
 	free(token->content);

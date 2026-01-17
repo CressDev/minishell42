@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/16 11:27:06 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/17 14:56:21 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ typedef struct s_fsm
 	size_t			i_token; /**< Inner index of buffer. */
 	size_t			i_input; /**< Inner state of user input. */
 	size_t			i_len; /**< Lenght of the user input. */
-	size_t			counter; /**< Aux counter of the FSM. */
 	size_t			token_capacity; /**< Int to represet initial buffer size */
+	bool			quote_flag; /**< Flag alert for quotes in FSM. */
 	bool			has_error; /**< Boolean to control error state. */
 	bool			has_content; /**< Boolean that determines the token creation. */
 	char			*input; /**< User input (readline). */

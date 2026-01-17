@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:47:40 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/16 12:31:13 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/17 16:01:06 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ static int	add_heredoc(t_cmd *cmd, char *delimeter)
 		return (-1);
 	j = 0;
 	while (j < i)
-		new[j++] = cmd->heredoc_delimiter[i];
+	{
+		new[j] = cmd->heredoc_delimiter[i];
+		j++;
+	}
 	new[i] = ft_strdup(delimeter);
 	if (!new[i])
 		return (free(new), -1);
