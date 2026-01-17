@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+         #
+#    By: cress <cress@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 10:19:55 by cress             #+#    #+#              #
-#    Updated: 2026/01/16 11:54:25 by kjroydev         ###   ########.fr        #
+#    Updated: 2026/01/17 21:30:10 by cress            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,11 @@ SRC			=	commands/built_in_cd.c			\
 				commands/redirect_heredoc.c		\
 				commands/redirect.c				\
 				commands/utils.c				\
+				commands/utils2.c				\
+				commands/utils3.c				\
+				commands/utils4.c				\
+				commands/utils5.c				\
+				commands/fsm_args_helper.c		\
 				execve/execution.c				\
 				execve/utils.c					\
 				fsm/error_handler.c				\

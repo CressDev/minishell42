@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 18:54:59 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/16 11:20:14 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/17 14:57:45 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	default_state(t_fsm *fsm)
 {
 	fsm->i_len = ft_strlen(fsm->input);
 	fsm->current_state = STATE_START;
-	fsm->counter = 0;
+	fsm->quote_flag = false;
 	fsm->i_token = 0;
 	fsm->i_input = 0;
 }

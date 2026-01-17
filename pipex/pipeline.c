@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:52:04 by cress             #+#    #+#             */
-/*   Updated: 2026/01/12 17:39:19 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/17 19:35:28 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,7 @@ void	execute_pipeline(t_cmd *cmd, int is_tty)
 			return ;
 		current = current->next;
 	}
+	if (prev_fd != -1)
+		close(prev_fd);
 	wait_for_pipeline_completion(&exec_data);
 }

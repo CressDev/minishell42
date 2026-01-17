@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/16 11:27:06 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/17 21:30:49 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ typedef struct s_fsm
 	size_t			i_token; /**< Inner index of buffer. */
 	size_t			i_input; /**< Inner state of user input. */
 	size_t			i_len; /**< Lenght of the user input. */
-	size_t			counter; /**< Aux counter of the FSM. */
 	size_t			token_capacity; /**< Int to represet initial buffer size */
+	bool			quote_flag; /**< Flag alert for quotes in FSM. */
 	bool			has_error; /**< Boolean to control error state. */
 	bool			has_content; /**< Boolean that determines the token creation. */
 	char			*input; /**< User input (readline). */
@@ -291,9 +291,9 @@ char			*get_value(t_list *lst, char *str);
 char			*create_double_operator_token(char operator);
 char			*create_single_operator_token(char operator);
 
-char			*handle_special_vars(char *str, int *pos);
-char			*extract_var_value(char *str, int start, int end, t_list *env);
-char			*get_var_name_with_eq(char *str, int start, int end);
+char			*get_var_name_with_eq(char *raw_token, int start, int end);
+char			*handle_special_vars(char *raw_token, int *pos);
+char			*extract_var_value(char *raw_token, int start, int end, t_list *env);
 
 char			*get_display_path(char *pwd, char *home);
 char			*join_with_color(char *color, char *text, char *reset);
@@ -305,5 +305,12 @@ void			free_mem(char **str);
 void			free_env(t_list **env);
 void			free_cmd_start(t_cmd **cmd);
 void			destroy_fsm(t_fsm **fsm);
+
+// Prototipos de helpers globales para utils
+int count_args_in_range(t_token *start, t_token *end);
+void fill_args_in_range(t_cmd *cmd, t_token *start, t_token *end);
+int count_heredocs_in_range(t_token *start, t_token *end);
+void fill_heredocs_in_range(t_cmd *cmd, t_token *start, t_token *end);
+void assign_args_heredocs_loop(t_cmd *head, t_token *token_list);
 
 #endif

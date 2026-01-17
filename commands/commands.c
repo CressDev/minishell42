@@ -6,7 +6,7 @@
 /*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 22:31:48 by cress             #+#    #+#             */
-/*   Updated: 2026/01/16 19:06:06 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/17 19:28:45 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ void	commands_parse_execution(t_token **tokens, t_envs *envs, int is_tty)
 	while (current)
 	{
 		if (current->next)
+		{
 			execute_pipeline(cmd, is_tty);
+			break;
+		}
 		else if (current->input_file || current->output_file
 			|| current->is_heredoc)
 			execute_redir(cmd, is_tty);

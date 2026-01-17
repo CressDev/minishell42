@@ -6,7 +6,7 @@
 /*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 11:10:15 by amonteag          #+#    #+#             */
-/*   Updated: 2026/01/17 19:35:53 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/17 21:31:18 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,95 +95,4 @@ t_cmd	*init_cmd(t_envs *envs)
 	cmd->args = NULL;
 	cmd->next = NULL;
 	return (cmd);
-}
-
-t_cmd	*parse_tokens(t_token *token, t_envs *envs)
-{
-	t_cmd	*head;
-	t_cmd	*current;
-	t_token *token_list;
-
-	head = NULL;
-	current = NULL;
-	token_list = token; // Guardar el inicio de la lista
-	while (token)
-	{
-		if (token->type == TOKEN_WORD)
-		{
-			current = token_word(current, token, envs);
-			if (!head)
-				head = current;
-			current->argc++;
-		}
-		else if (token->type == TOKEN_PIPE)
-			current = token_pipe(envs, current);
-		else if (token->type == TOKEN_REDIR_IN || token->type == TOKEN_REDIR_OUT
-			|| token->type == TOKEN_APPEND || token->type == TOKEN_HEREDOC)
-		{
-			token_redirect(current, token);
-			if (token->next)
-				token = token->next;
-		}
-		expand_token(token, envs);
-		token = token->next;
-	}
-	// --- ASIGNA ARGUMENTOS Y HEREDOCS A CADA COMANDO DE LA PIPELINE ---
-	t_cmd *cmd_iter = head;
-	t_token *tok_iter = token_list;
-	while (cmd_iter) {
-		t_token *start = tok_iter;
-		t_token *end = tok_iter;
-		// Busca el final del segmento (pipe o NULL)
-		while (end && end->type != TOKEN_PIPE)
-			end = end->next;
-
-		// Helpers modificados para aceptar rango [start, end)
-		int argc = 0;
-		int hcount = 0;
-		t_token *tmp = start;
-		t_token *prev = NULL;
-		while (tmp != end) {
-			if (tmp->type == TOKEN_WORD && (!prev || (prev->type != TOKEN_REDIR_IN && prev->type != TOKEN_REDIR_OUT && prev->type != TOKEN_APPEND && prev->type != TOKEN_HEREDOC)))
-				argc++;
-			prev = tmp;
-			tmp = tmp->next;
-		}
-		cmd_iter->args = ft_calloc(argc + 1, sizeof(char *));
-		tmp = start;
-		prev = NULL;
-		int i = 0;
-		while (tmp != end) {
-			if (tmp->type == TOKEN_WORD && (!prev || (prev->type != TOKEN_REDIR_IN && prev->type != TOKEN_REDIR_OUT && prev->type != TOKEN_APPEND && prev->type != TOKEN_HEREDOC)))
-				cmd_iter->args[i++] = ft_strdup(tmp->content);
-			prev = tmp;
-			tmp = tmp->next;
-		}
-		cmd_iter->args[i] = NULL;
-
-		tmp = start;
-		while (tmp != end) {
-			if (tmp->type == TOKEN_HEREDOC && tmp->next && tmp->next->type == TOKEN_WORD)
-				hcount++;
-			tmp = tmp->next;
-		}
-		if (hcount > 0) {
-			cmd_iter->heredoc_delimiter = ft_calloc(hcount + 1, sizeof(char *));
-			tmp = start;
-			i = 0;
-			while (tmp != end) {
-				if (tmp->type == TOKEN_HEREDOC && tmp->next && tmp->next->type == TOKEN_WORD)
-					cmd_iter->heredoc_delimiter[i++] = ft_strdup(tmp->next->content);
-				tmp = tmp->next;
-			}
-			cmd_iter->heredoc_delimiter[i] = NULL;
-			cmd_iter->is_heredoc = 1;
-		}
-
-		if (end && end->type == TOKEN_PIPE)
-			tok_iter = end->next;
-		else
-			tok_iter = end;
-		cmd_iter = cmd_iter->next;
-	}
-	return head;
 }
