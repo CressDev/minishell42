@@ -6,7 +6,7 @@
 /*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 18:24:20 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/17 23:37:42 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/18 08:55:36 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static int	print_commands(t_cmd *cmd, int *i)
 			ft_printf(" ");
 		(*i)++;
 	}
+	g_signal = 0;
 	return (0);
 }
 
@@ -32,18 +33,23 @@ void	echo_command(t_cmd *cmd)
 
 	newline = true;
 	i = 1;
-	while (i < cmd->argc && cmd->args[i][0] == '-' && cmd->args[i][1] == 'n')
+	while (i < cmd->argc)
 	{
-		j = 2;
-		while (cmd->args[i][j] == 'n')
-			j++;
-		if (cmd->args[i][j] == '\0')
-			break ;
-		i++;
-		newline = false;
+		if (cmd->args[i][0] == '-')
+		{
+			j = 1;
+			while (cmd->args[i][j] == 'n')
+				j++;
+			if (j > 1 && cmd->args[i][j] == '\0')
+			{
+				newline = false;
+				i++;
+				continue;
+			}
+		}
+		break;
 	}
 	print_commands(cmd, &i);
 	if (newline)
 		ft_printf("\n");
-	g_signal = 0;
 }

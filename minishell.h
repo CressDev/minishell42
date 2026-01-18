@@ -6,7 +6,7 @@
 /*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/17 21:30:49 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/18 08:41:52 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stddef.h>
+
 # include <errno.h>
 
 # define COLOR_RESET	"\033[0m"
@@ -283,6 +284,10 @@ void			direct_execute(t_cmd *cmd);
 bool			is_built_in(t_cmd *cmd);
 bool			handler_var(t_list **env, char *word, int size);
 void			add_new_var(t_list **env, char *word);
+int				is_valid_identifier(const char *str);
+bool			handler_var(t_list **env, char *word, int size);
+void			add_new_var(t_list **env, char *word);
+void			order_env(t_list *env);
 
 char			*find_command_in_path(char *command, t_list *env);
 char			*check_direct_path(char *command);
