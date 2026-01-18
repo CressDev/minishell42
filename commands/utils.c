@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 11:10:15 by amonteag          #+#    #+#             */
-/*   Updated: 2026/01/17 21:31:18 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/18 13:38:02 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*handle_special_vars(char *raw_token, int *pos)
 	return (NULL);
 }
 
-char	*extract_var_value(char *raw_token, int start, int end, t_list *env)
+char	*var_value(char *raw_token, int start, int end, t_list *env)
 {
 	char	*var_name_eq;
 	char	*var_value;

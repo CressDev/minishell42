@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execution.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 10:15:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/17 07:47:35 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/18 13:37:06 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	close_unused_pipe_child(t_cmd *current, int *prev_fd, int pipefd[2],
+void	close_pipe_child(t_cmd *current, int *prev_fd, int pipefd[2],
 						int *out_fd)
 {
 	if (current->next)

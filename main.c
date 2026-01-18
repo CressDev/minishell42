@@ -49,13 +49,13 @@ static char	*read_input(t_list *envs, int is_tty)
 
 	if (is_tty)
 	{
- 		prompt = create_prompt(envs);
- 		if (!prompt)
- 			return (NULL);
- 		set_in_readline_state(1);
- 		line = readline(prompt);
- 		set_in_readline_state(0);
- 		free(prompt);
+		prompt = create_prompt(envs);
+		if (!prompt)
+			return (NULL);
+		set_in_readline_state(1);
+		line = readline(prompt);
+		set_in_readline_state(0);
+		free(prompt);
 	}
 	else
 	{
@@ -100,7 +100,7 @@ static t_list	**init_env(char **environ)
  *
  * This function controls the core execution flow of the minishell.
  * It continuously reads user input, handles end-of-file (EOF) conditions,
- * signal interruptions, and tokenizes the input using a Finite State Machine (FSM).
+ * signal interruptions, and tokenizes the input using a Finite State Machine.
  * Once tokenized, the input is parsed and executed as shell commands.
  *
  * The loop runs indefinitely until an EOF condition is detected or an
@@ -111,9 +111,9 @@ static t_list	**init_env(char **environ)
  */
 static void	shell_main_loop(t_envs *envs)
 {
-	char	*line; /**< Stores the user input string. */
+	char	*line;
 	int		is_tty;
-	t_token	*tokens; /**< Linked list of tokenized commands. */
+	t_token	*tokens;
 
 	is_tty = isatty(STDIN_FILENO);
 	while (1)
@@ -127,7 +127,7 @@ static void	shell_main_loop(t_envs *envs)
 		if (!obtain_tokens(line, &tokens))
 			continue ;
 		add_history(line);
-		commands_parse_execution(&tokens, envs, is_tty);
+		commands(&tokens, envs, is_tty);
 		free_tokens(&tokens);
 		free(line);
 	}

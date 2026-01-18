@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fsm_args_helper.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 20:30:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/17 20:04:21 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/18 13:56:44 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,15 @@ int	count_args_no_redirect_fsm(t_token *token)
 	while (token && token->type != TOKEN_PIPE)
 	{
 		if (token->type == TOKEN_WORD && (!prev
-			|| (prev->type != TOKEN_REDIR_IN && prev->type != TOKEN_REDIR_OUT
-			&& prev->type != TOKEN_APPEND && prev->type != TOKEN_HEREDOC)))
+				|| (prev->type != TOKEN_REDIR_IN
+					&& prev->type != TOKEN_REDIR_OUT
+					&& prev->type != TOKEN_APPEND
+					&& prev->type != TOKEN_HEREDOC)))
 			count++;
 		prev = token;
 		token = token->next;
 	}
-	return count;
+	return (count);
 }
 
 void	fill_args_array_fsm(t_cmd *cmd, t_token *token)
@@ -40,7 +42,11 @@ void	fill_args_array_fsm(t_cmd *cmd, t_token *token)
 	prev = NULL;
 	while (token && token->type != TOKEN_PIPE)
 	{
-		if (token->type == TOKEN_WORD && (!prev || (prev->type != TOKEN_REDIR_IN && prev->type != TOKEN_REDIR_OUT && prev->type != TOKEN_APPEND && prev->type != TOKEN_HEREDOC)))
+		if (token->type == TOKEN_WORD && (!prev
+				|| (prev->type != TOKEN_REDIR_IN
+					&& prev->type != TOKEN_REDIR_OUT
+					&& prev->type != TOKEN_APPEND
+					&& prev->type != TOKEN_HEREDOC)))
 		{
 			cmd->args[i] = ft_strdup(token->content);
 			i++;
@@ -53,22 +59,28 @@ void	fill_args_array_fsm(t_cmd *cmd, t_token *token)
 
 int	count_heredoc_delims_fsm(t_token *token)
 {
-	int count = 0;
+	int	count;
+
+	count = 0;
 	while (token && token->type != TOKEN_PIPE)
 	{
-		if (token->type == TOKEN_HEREDOC && token->next && token->next->type == TOKEN_WORD)
+		if (token->type == TOKEN_HEREDOC
+			&& token->next && token->next->type == TOKEN_WORD)
 			count++;
 		token = token->next;
 	}
-	return count;
+	return (count);
 }
 
 void	fill_heredoc_delims_fsm(t_cmd *cmd, t_token *token)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (token && token->type != TOKEN_PIPE)
 	{
-		if (token->type == TOKEN_HEREDOC && token->next && token->next->type == TOKEN_WORD)
+		if (token->type == TOKEN_HEREDOC && token->next
+			&& token->next->type == TOKEN_WORD)
 		{
 			cmd->heredoc_delimiter[i] = ft_strdup(token->next->content);
 			i++;

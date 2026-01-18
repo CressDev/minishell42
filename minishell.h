@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/18 08:41:52 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/18 14:13:03 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ typedef struct s_fsm
 	size_t			token_capacity; /**< Int to represet initial buffer size */
 	bool			quote_flag; /**< Flag alert for quotes in FSM. */
 	bool			has_error; /**< Boolean to control error state. */
-	bool			has_content; /**< Boolean that determines the token creation. */
+	bool			has_content; /**< Boolean for the token creation. */
 	char			*input; /**< User input (readline). */
 	char			*token; /**< Buffer to construct tokens. */
 }	t_fsm;
@@ -106,12 +106,12 @@ typedef struct s_fsm
  * 
  * Composition:
  * 
- * - env: Linked list of "NAME=VALUE" strings duplicated from the parent process environment.
+ * - env: Linked list of "NAME=VALUE" from the parent process environment.
  *        This is the shell's internal representation and can be modified
  *        (e.g., export, unset, SHLVL).
  * 
- * - environ: Pointer to the original environment provided by the system (array of strings),
- *            read-only. Represents the environment of the shell that launched the minishell.
+ * - environ: Pointer to the original environment (array of strings),
+ *            read-only. Represents the environment of the minishell.
  */
 typedef struct s_envs
 {
@@ -146,26 +146,26 @@ typedef struct s_token
 
 /**
  * @struct s_cmd
- * @brief Represents a single command that has been fully parsed by the FSM-based token parser.
+ * @brief Represents a single command that has been fully parsed.
  * 
  * This structure encapsulates all the information needed to execute a command,
- * including its arguments, input/output redirections, heredoc delimiters, and links
+ * including its arguments, redirections, heredoc delimiters, and links
  * to the next command in a pipeline.
  * 
  * Composition:
  * 
- * - envs: Pointer to the environment structure containing the shell's environment list and array.
+ * - envs: Pointer to the environment structure.
  * 
- * - args: Null-terminated array of strings representing the command and its arguments.
+ * - args: Null-terminated array of strings representing the command.
  *         For example, for `ls -l /tmp`, args = ["ls", "-l", "/tmp", NULL].
  * 
- * - input_file: Path to a file for input redirection (corresponding to `< filename`).
+ * - input_file: Path to a file for input redirection (`< filename`).
  *               NULL if no input redirection is specified.
  * 
- * - output_file: Path to a file for output redirection (corresponding to `> filename` or `>> filename`).
+ * - output_file: Path to a file for output (`> filename` or `>> filename`).
  *                NULL if no output redirection is specified.
  * 
- * - heredoc_delimiter: Array of strings containing the delimiters for heredoc inputs (`<<`).
+ * - heredoc_delimiter: Array containing the delimiters of heredoc(`<<`).
  *                      Each entry represents a separate heredoc in the command.
  *                      NULL if no heredoc is specified.
  * 
@@ -185,11 +185,12 @@ typedef struct s_token
  * 
  * Parsed structure:
  *   cmd1: args = ["cat", "file.txt", NULL], next -> cmd2
- *   cmd2: args = ["grep", "foo", NULL], output_file = "out.txt", append = 0, next = NULL
+ *   cmd2: args = ["grep", "foo", NULL], 
+ * 					output_file = "out.txt", append = 0, next = NULL
  */
 typedef struct s_cmd
 {
-	t_envs			*envs;					/**< Shell environment. Check structure for further info. */
+	t_envs			*envs;					/**< Shell environment. */
 	char			**args;					/**< Command and arguments. */
 	char			*input_file;			/**< Input redirection file. */
 	char			*output_file;			/**< Output redirection file. */
@@ -250,9 +251,9 @@ void			execute_redir(t_cmd *cmd, int is_tty);
 int				setup_input_redirect(t_cmd *cmd);
 int				setup_output_redirect(t_cmd *cmd);
 int				setup_all_heredocs(t_cmd *cmd, int is_tty);
-void			commands_parse_execution(t_token **tokens, t_envs *envs, int is_tty);
+void			commands(t_token **tokens, t_envs *envs, int is_tty);
 
-void			close_unused_pipe_child(t_cmd *current, int *prev_fd, int pipefd[2],
+void			close_pipe_child(t_cmd *current, int *prev_fd, int pipefd[2],
 					int *out_fd);
 void			execute_pipeline(t_cmd *cmd, int is_tty);
 void			execute_pipeline_child(t_cmd *cmd, int input_fd, int output_fd,
@@ -298,7 +299,7 @@ char			*create_single_operator_token(char operator);
 
 char			*get_var_name_with_eq(char *raw_token, int start, int end);
 char			*handle_special_vars(char *raw_token, int *pos);
-char			*extract_var_value(char *raw_token, int start, int end, t_list *env);
+char			*var_value(char *raw_token, int start, int end, t_list *env);
 
 char			*get_display_path(char *pwd, char *home);
 char			*join_with_color(char *color, char *text, char *reset);
@@ -311,11 +312,10 @@ void			free_env(t_list **env);
 void			free_cmd_start(t_cmd **cmd);
 void			destroy_fsm(t_fsm **fsm);
 
-// Prototipos de helpers globales para utils
-int count_args_in_range(t_token *start, t_token *end);
-void fill_args_in_range(t_cmd *cmd, t_token *start, t_token *end);
-int count_heredocs_in_range(t_token *start, t_token *end);
-void fill_heredocs_in_range(t_cmd *cmd, t_token *start, t_token *end);
-void assign_args_heredocs_loop(t_cmd *head, t_token *token_list);
+int				count_args_in_range(t_token *start, t_token *end);
+void			fill_args_in_range(t_cmd *cmd, t_token *start, t_token *end);
+int				count_heredocs_in_range(t_token *start, t_token *end);
+void			fill_heredocs(t_cmd *cmd, t_token *start, t_token *end);
+void			assign_args_heredocs_loop(t_cmd *head, t_token *token_list);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 22:31:48 by cress             #+#    #+#             */
-/*   Updated: 2026/01/17 19:28:45 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/18 13:46:19 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	is_built_in(t_cmd *cmd)
 {
 	if (!cmd->args || !cmd->args[0])
-		return false;
+		return (false);
 	if (ft_strcmp(cmd->args[0], "env") == 0)
 		return (env_command(cmd), true);
 	if (ft_strcmp(cmd->args[0], "pwd") == 0)
@@ -33,7 +33,7 @@ bool	is_built_in(t_cmd *cmd)
 	return (false);
 }
 
-void	commands_parse_execution(t_token **tokens, t_envs *envs, int is_tty)
+void	commands(t_token **tokens, t_envs *envs, int is_tty)
 {
 	t_cmd	*cmd;
 	t_cmd	*current;
@@ -45,7 +45,7 @@ void	commands_parse_execution(t_token **tokens, t_envs *envs, int is_tty)
 		if (current->next)
 		{
 			execute_pipeline(cmd, is_tty);
-			break;
+			break ;
 		}
 		else if (current->input_file || current->output_file
 			|| current->is_heredoc)

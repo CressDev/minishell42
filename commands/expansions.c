@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansions.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 20:45:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/17 20:18:04 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/18 14:27:38 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static char	*expand_variable(char *raw_token, int *pos, t_list *env)
 		return (result);
 	}
 	*pos = end;
-	return (extract_var_value(raw_token, start, end, env));
+	return (var_value(raw_token, start, end, env));
 }
 
 static char	*join_and_free(char *res, char *var)
@@ -50,7 +50,7 @@ static char	*join_and_free(char *res, char *var)
 	return (new);
 }
 
-static char *join_char(char *res, char c)
+static char	*join_char(char *res, char c)
 {
 	char	*new;
 	size_t	len;

@@ -1,16 +1,14 @@
- 
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   built_in_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amonteag <amonteag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 23:19:30 by cress             #+#    #+#             */
-/*   Updated: 2025/12/29 11:47:00 by amonteag         ###   ########.fr       */
+/*   Updated: 2026/01/18 13:45:35 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -26,11 +24,10 @@ static void	export_handle_arg(t_cmd *cmd, char *arg)
 		if (arg[j] == '=')
 		{
 			eq = (char *)&arg[j];
-			break;
+			break ;
 		}
 		j++;
 	}
-	
 	if (!is_valid_identifier(arg))
 	{
 		ft_printf("minishell: export: %s: not a valid identifier\n", arg);
@@ -39,13 +36,13 @@ static void	export_handle_arg(t_cmd *cmd, char *arg)
 	else if (eq)
 	{
 		if (!handler_var(cmd->envs->env, arg, 0))
-		add_new_var(cmd->envs->env, arg);
+			add_new_var(cmd->envs->env, arg);
 	}
 }
 
 static void	export_args(t_cmd *cmd)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < cmd->argc)
@@ -64,7 +61,7 @@ void	export_command(t_cmd *cmd)
 	{
 		current = *cmd->envs->env;
 		order_env(current);
-		while(current)
+		while (current)
 		{
 			ft_printf("declare -x %s\n", current->content);
 			current = current->next;
@@ -75,4 +72,3 @@ void	export_command(t_cmd *cmd)
 		export_args(cmd);
 	}
 }
-

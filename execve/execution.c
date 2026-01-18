@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:54:50 by cress             #+#    #+#             */
-/*   Updated: 2026/01/16 18:48:55 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/18 13:41:43 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void create_children(char *full_path, char **args, char **envirom)
+static void	create_children(char *full_path, char **args, char **envirom)
 {
-	pid_t pid;
-	int status;
+	pid_t	pid;
+	int		status;
 
 	pid = fork();
 	if (pid == 0)

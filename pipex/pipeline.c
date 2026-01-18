@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:52:04 by cress             #+#    #+#             */
-/*   Updated: 2026/01/17 19:35:28 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/18 13:37:19 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	execute_single_pipe_cmd(t_cmd *current, int *prev_fd, int pipefd[2],
 	pid = fork();
 	if (pid == 0)
 	{
-		close_unused_pipe_child(current, prev_fd, pipefd, &out_fd);
+		close_pipe_child(current, prev_fd, pipefd, &out_fd);
 		execute_pipeline_child(current, *prev_fd, out_fd, exec_data);
 		exit(g_signal);
 	}

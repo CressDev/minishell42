@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 21:13:54 by cress             #+#    #+#             */
-/*   Updated: 2026/01/17 21:51:53 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/18 13:48:28 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,15 @@
 
 int	count_args_in_range(t_token *start, t_token *end)
 {
-	int argc = 0;
-	t_token *tmp = start, *prev = NULL;
-	while (tmp != end) {
+	int		argc;
+	t_token	*tmp;
+	t_token	*prev;
+
+	argc = 0;
+	tmp = start;
+	prev = NULL;
+	while (tmp != end)
+	{
 		if (tmp->type == TOKEN_WORD && (!prev || (prev->type != TOKEN_REDIR_IN
 			&& prev->type != TOKEN_REDIR_OUT && prev->type != TOKEN_APPEND
 			&& prev->type != TOKEN_HEREDOC)))
@@ -24,7 +30,7 @@ int	count_args_in_range(t_token *start, t_token *end)
 		prev = tmp;
 		tmp = tmp->next;
 	}
-	return argc;
+	return (argc);
 }
 
 void	fill_args_in_range(t_cmd *cmd, t_token *start, t_token *end)
@@ -47,4 +53,3 @@ void	fill_args_in_range(t_cmd *cmd, t_token *start, t_token *end)
 	}
 	cmd->args[i] = NULL;
 }
-

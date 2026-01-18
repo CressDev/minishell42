@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:44:40 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/17 15:49:35 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/18 14:31:21 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static bool	create_condition(t_fsm *fsm, char c, t_token **tokens)
 {
-	if ((c == ' ' || c == '\t' || c== '\0') && fsm->has_content
+	if ((c == ' ' || c == '\t' || c == '\0') && fsm->has_content
 		&& !fsm->quote_flag)
 	{
 		create_token(fsm, tokens);

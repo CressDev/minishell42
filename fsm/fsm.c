@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:21:52 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/10 16:57:30 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/18 14:32:32 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static void	fsm_dispatcher(t_fsm *fsm, t_token **tokens)
 {
-	char	c;
-	bool	consume;
-	static t_state_handler g_handlers[] = {
+	char					c;
+	bool					consume;
+	static t_state_handler	g_handlers[] = {
 		state_start,
 		state_word,
 		state_squote,
@@ -44,7 +44,7 @@ static void	fsm_dispatcher(t_fsm *fsm, t_token **tokens)
 /**
  * @brief Controls the Finite State Machine (FSM) for tokenization.
  *
- * This function initializes the FSM and dispatches it to perform lexical analysis
+ * This function initializes the FSM to perform lexical analysis
  * of the user input. The FSM uses a function pointer array (dispatcher) indexed
  * by an enum representing each state, allowing the FSM to transition through
  * the different parsing states automatically.
@@ -55,7 +55,7 @@ static void	fsm_dispatcher(t_fsm *fsm, t_token **tokens)
  */
 void	entry_point(char *input, t_token **tokens)
 {
-	t_fsm * fsm;
+	t_fsm	*fsm;
 
 	*tokens = NULL;
 	fsm = init_fsm(input);

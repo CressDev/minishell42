@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 21:30:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/17 21:49:21 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/18 13:39:34 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	assign_args_heredocs_heredocs(t_cmd *cmd, t_token *start, t_token *end)
 	if (hcount > 0)
 	{
 		cmd->heredoc_delimiter = ft_calloc(hcount + 1, sizeof(char *));
-		fill_heredocs_in_range(cmd, start, end);
+		fill_heredocs(cmd, start, end);
 		cmd->is_heredoc = 1;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 20:01:53 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/17 14:40:25 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/18 14:31:32 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_token	*init_token(t_fsm *fsm, int quoted)
 
 void	token_add_back(t_token **tokens, t_token *new)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	if (!tokens || !new)
 		return ;

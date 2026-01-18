@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 20:41:38 by cress             #+#    #+#             */
-/*   Updated: 2026/01/17 21:45:37 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/18 14:29:11 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	count_heredocs_in_range(t_token *start, t_token *end)
 {
-	t_token *tmp;
-	int count;
+	t_token	*tmp;
+	int		count;
 
 	tmp = start;
 	count = 0;
@@ -28,16 +28,18 @@ int	count_heredocs_in_range(t_token *start, t_token *end)
 	return (count);
 }
 
-void fill_heredocs_in_range(t_cmd *cmd, t_token *start, t_token *end)
+void	fill_heredocs(t_cmd *cmd, t_token *start, t_token *end)
 {
-	t_token *tmp;
-	int i;
+	t_token	*tmp;
+	int		i;
 
 	tmp = start;
 	i = 0;
 	while (tmp != end)
 	{
-		if (tmp->type == TOKEN_HEREDOC && tmp->next && tmp->next->type == TOKEN_WORD)
+		if (tmp->type == TOKEN_HEREDOC
+			&& tmp->next
+			&& tmp->next->type == TOKEN_WORD)
 		{
 			cmd->heredoc_delimiter[i] = ft_strdup(tmp->next->content);
 			i++;
