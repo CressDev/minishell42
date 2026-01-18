@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:54:50 by cress             #+#    #+#             */
-/*   Updated: 2026/01/16 13:44:31 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/16 18:48:55 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void create_children(char *full_path, char **args, char **envirom)
 	pid = fork();
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
 		execve(full_path, args, envirom);
 		perror("execve failed");
 		exit(126);

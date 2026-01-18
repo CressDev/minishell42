@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execution.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 10:15:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/13 17:05:09 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/17 07:47:35 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ t_pipeinfo	setup_pipeline(int *prev_fd, int pipefd[2])
 
 void	setup_file_redirections(t_cmd *cmd, int file_fd, int is_tty)
 {
+	// Removed debug log
 	if (cmd->is_heredoc || cmd->input_file)
 	{
 		if (cmd->is_heredoc)

@@ -49,11 +49,13 @@ static char	*read_input(t_list *envs, int is_tty)
 
 	if (is_tty)
 	{
-		prompt = create_prompt(envs);
-		if (!prompt)
-			return (NULL);
-		line = readline(prompt);
-		free(prompt);
+ 		prompt = create_prompt(envs);
+ 		if (!prompt)
+ 			return (NULL);
+ 		set_in_readline_state(1);
+ 		line = readline(prompt);
+ 		set_in_readline_state(0);
+ 		free(prompt);
 	}
 	else
 	{
@@ -116,7 +118,6 @@ static void	shell_main_loop(t_envs *envs)
 	is_tty = isatty(STDIN_FILENO);
 	while (1)
 	{
-		g_signal = 0;
 		tokens = NULL;
 		line = read_input(*envs->env, is_tty);
 		if (handle_eof(line, is_tty))

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+         #
+#    By: cress <cress@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 10:19:55 by cress             #+#    #+#              #
-#    Updated: 2026/01/16 11:54:25 by kjroydev         ###   ########.fr        #
+#    Updated: 2026/01/18 09:00:11 by cress            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRC			=	commands/built_in_cd.c			\
 				commands/built_in_echo.c		\
 				commands/built_in_exit.c		\
 				commands/built_in_export.c		\
+				commands/built_in_export_utils.c\
 				commands/built_ins.c			\
 				commands/commands.c				\
 				commands/expansions.c			\
@@ -30,6 +31,11 @@ SRC			=	commands/built_in_cd.c			\
 				commands/redirect_heredoc.c		\
 				commands/redirect.c				\
 				commands/utils.c				\
+				commands/utils2.c				\
+				commands/utils3.c				\
+				commands/utils4.c				\
+				commands/utils5.c				\
+				commands/fsm_args_helper.c		\
 				execve/execution.c				\
 				execve/utils.c					\
 				fsm/error_handler.c				\
@@ -65,11 +71,11 @@ CFLAGS		= -Wall -Wextra -Werror -g -O0
 all: $(NAME) $(LIBFT)
 
 $(LIBFT):
-	@echo "⚙️ 📘 Compiling libft..."
+	@echo "Compiled libft"
 	@$(MAKE) -C $(LIBFT_DIR) > /dev/null 2>&1
 
 $(NAME): $(OBJ) $(LIBFT)
-	@echo "⚙️  Compiling minishell..."
+	@echo "Compiled minishell"
 	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -lreadline -o $(NAME)
 
 $(OBJ_DIR)/%.o: %.c
@@ -81,12 +87,12 @@ $(OBJ_DIR)/%.o: %.c
 ###########################################
 
 clean:
-	@echo "🧹 Removing object files..."
+	@echo "Removing object files"
 	@rm -rf $(OBJ_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) clean > /dev/null 2>&1
 
 fclean: clean
-	@echo "🧹 Removing executables..."
+	@echo "Removing executables"
 	@rm -f $(NAME)
 	@$(MAKE) -C $(LIBFT_DIR) fclean > /dev/null 2>&1
 
