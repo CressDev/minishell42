@@ -118,7 +118,6 @@ static void	shell_main_loop(t_envs *envs)
 	is_tty = isatty(STDIN_FILENO);
 	while (1)
 	{
-		g_signal = 0;
 		tokens = NULL;
 		line = read_input(*envs->env, is_tty);
 		if (handle_eof(line, is_tty))

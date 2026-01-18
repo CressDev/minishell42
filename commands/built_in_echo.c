@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_echo.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 18:24:20 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/16 11:12:33 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/17 23:37:42 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,5 @@ void	echo_command(t_cmd *cmd)
 	print_commands(cmd, &i);
 	if (newline)
 		ft_printf("\n");
-	g_signal = 1;
+	g_signal = 0;
 }

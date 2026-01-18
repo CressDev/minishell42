@@ -13,6 +13,27 @@
 
 #include "minishell.h"
 
+
+// Valida si el nombre es un identificador válido para export (sin bucles for)
+static bool is_valid_identifier(const char *name) {
+	int i = 0;
+	if (!name || !name[0])
+		return false;
+	// Si empieza con '=' no es válido
+	if (name[0] == '=')
+		return false;
+	// Si empieza con número o carácter inválido
+	if (!((name[0] >= 'A' && name[0] <= 'Z') || (name[0] >= 'a' && name[0] <= 'z') || name[0] == '_'))
+		return false;
+	i = 1;
+	while (name[i] && name[i] != '=') {
+		if (!((name[i] >= 'A' && name[i] <= 'Z') || (name[i] >= 'a' && name[i] <= 'z') || (name[i] >= '0' && name[i] <= '9') || name[i] == '_'))
+			return false;
+		i++;
+	}
+	return true;
+}
+
 bool	handler_var(t_list **env, char *word, int size)
 {
 	t_list	*current;
@@ -77,11 +98,41 @@ void	order_env(t_list *env)
 	}
 }
 
+static void	export_args(t_cmd *cmd)
+{
+	int i = 1;
+	while (i < cmd->argc)
+	{
+		char *eq = NULL;
+		int j = 0;
+		while (cmd->args[i][j]) {
+			if (cmd->args[i][j] == '=') {
+				eq = (char *)&cmd->args[i][j];
+				break;
+			}
+			j++;
+		}
+		if (!is_valid_identifier(cmd->args[i])) {
+			ft_printf("minishell: export: %s: not a valid identifier\n", cmd->args[i]);
+			g_signal = 1;
+		} else if (eq){
+			if (!handler_var(cmd->envs->env, cmd->args[i], 0))
+				add_new_var(cmd->envs->env, cmd->args[i]);
+		} else {
+			// Si no contiene '=', solo exportar si ya existe (no crear nueva)
+			if (!handler_var(cmd->envs->env, cmd->args[i], 0)) {
+				// No hacer nada, no se crea la variable
+			}
+		}
+		i++;
+	}
+}
+
 void	export_command(t_cmd *cmd)
 {
 	t_list	*current;
-	int		i;
 
+	g_signal = 0;
 	if (cmd->argc == 1)
 	{
 		current = *cmd->envs->env;
@@ -94,13 +145,7 @@ void	export_command(t_cmd *cmd)
 	}
 	else
 	{
-		i = 1;
-		while (i < cmd->argc)
-		{
-			if (!handler_var(cmd->envs->env, cmd->args[i], 0))
-				add_new_var(cmd->envs->env, cmd->args[i]);
-			i++;
-		}
+		export_args(cmd);
 	}
-	g_signal = 0;
 }
+
