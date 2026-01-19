@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kmarrero <kmarrero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/19 12:56:54 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/19 21:20:06 by kmarrero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,6 @@ bool	obtain_tokens(char *line, t_token **tokens);
 void	entry_point(char *input, t_token **tokens);
 t_fsm	*init_fsm(char *input);
 t_type	fsm_state_to_token_type(t_fsm *fsm);
-typedef bool	(*t_handler)(t_fsm *, char, t_token **);
 bool	state_start(t_fsm *fsm, char c, t_token **tokens);
 bool	state_word(t_fsm *fsm, char c, t_token **tokens);
 bool	state_squote(t_fsm *fsm, char c, t_token **tokens);

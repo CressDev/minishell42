@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fsm.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kmarrero <kmarrero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:21:52 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/19 09:59:18 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/19 21:30:43 by kmarrero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static void	fsm_dispatcher(t_fsm *fsm, t_token **tokens)
 {
-	char					c;
-	bool					consume;
-	static t_handler		g_handlers[] = {
+	char		c;
+	bool		consume;
+	static bool	(*g_handlers[8])(t_fsm *, char, t_token **) = {
 		state_start,
 		state_word,
 		state_squote,
