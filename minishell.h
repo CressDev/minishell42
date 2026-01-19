@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/19 09:59:09 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/19 12:17:58 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stddef.h>
-
 # include <errno.h>
 
 # define COLOR_RESET	"\033[0m"
@@ -238,14 +237,17 @@ void	token_append_str(t_fsm *fsm, const char *str, t_token **tokens);
 void	token_append_char(t_fsm *fsm, const char c, t_token **tokens);
 void	expand_token_buffer(t_fsm *fsm, t_token **tokens);
 void	token_add_back(t_token **tokens, t_token *new);
-void	free_tokens(t_token **tokens);
 t_cmd	*token_word(t_cmd *current, t_token *token, t_envs *envs);
 t_cmd	*token_pipe(t_envs *envs, t_cmd *current);
 void	token_redirect(t_cmd *current, t_token *token);
 
-t_cmd	*init_cmd(t_envs *envs);
 t_cmd	*parse_tokens(t_token *token, t_envs *envs);
 void	expand_token(t_token *token, t_envs *envs);
+int		count_args_in_range(t_token *start, t_token *end);
+void	fill_args_in_range(t_cmd *cmd, t_token *start, t_token *end);
+int		count_heredocs_in_range(t_token *start, t_token *end);
+void	fill_heredocs(t_cmd *cmd, t_token *start, t_token *end);
+void	assign_args_heredocs_loop(t_cmd *head, t_token *token_list);
 void	restore_fds(int saved_stdin, int saved_stdout, int input_fd,
 			int output_fd);
 void	execute_redir(t_cmd *cmd, int is_tty);
@@ -290,6 +292,10 @@ int		is_valid_identifier(const char *str);
 bool	handler_var(t_list **env, char *word, int size);
 void	add_new_var(t_list **env, char *word);
 void	order_env(t_list *env);
+void	chenv(t_list **env, char *new_dir, char *cur_dir);
+void	ch_dir(t_list **env, char *cur_dir, char *path);
+void	ch_cases(t_list **env, char *cur_dir, int cases);
+void	ch_parent(t_list **env, char *cur_dir);
 
 char	*find_command_in_path(char *command, t_list *env);
 char	*check_direct_path(char *command);
@@ -298,7 +304,6 @@ char	*get_value(t_list *lst, char *str);
 char	*create_double_operator_token(char operator);
 char	*create_single_operator_token(char operator);
 
-char	*get_var_name_with_eq(char *raw_token, int start, int end);
 char	*handle_special_vars(char *raw_token, int *pos);
 char	*var_value(char *raw_token, int start, int end, t_list *env);
 
@@ -312,11 +317,6 @@ void	free_mem(char **str);
 void	free_env(t_list **env);
 void	free_cmd_start(t_cmd **cmd);
 void	destroy_fsm(t_fsm **fsm);
-
-int		count_args_in_range(t_token *start, t_token *end);
-void	fill_args_in_range(t_cmd *cmd, t_token *start, t_token *end);
-int		count_heredocs_in_range(t_token *start, t_token *end);
-void	fill_heredocs(t_cmd *cmd, t_token *start, t_token *end);
-void	assign_args_heredocs_loop(t_cmd *head, t_token *token_list);
+void	free_tokens(t_token **tokens);
 
 #endif

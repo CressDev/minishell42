@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils4.c                                           :+:      :+:    :+:   */
+/*   heredoc_loop.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 21:30:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/19 08:52:31 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/19 12:24:59 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	assign_args_heredocs_heredocs(t_cmd *cmd, t_token *start, t_token *end)
+static void	assign_args_heredocs_heredocs(t_cmd *cmd, t_token *start, t_token *end)
 {
 	int	hcount;
 
@@ -25,7 +25,7 @@ void	assign_args_heredocs_heredocs(t_cmd *cmd, t_token *start, t_token *end)
 	}
 }
 
-void	assign_args_heredocs_args(t_cmd *cmd, t_token *start, t_token *end)
+static void	assign_args_heredocs_args(t_cmd *cmd, t_token *start, t_token *end)
 {
 	int	argc;
 
@@ -34,23 +34,21 @@ void	assign_args_heredocs_args(t_cmd *cmd, t_token *start, t_token *end)
 	fill_args_in_range(cmd, start, end);
 }
 
-void	assign_args_heredocs_find_end(t_token **end)
-{
-	while (*end && (*end)->type != TOKEN_PIPE)
-		*end = (*end)->next;
-}
-
-void	assign_args_heredocs_step(t_cmd *cmd, t_token **tok_iter)
+static void	assign_args_heredocs_step(t_cmd *cmd, t_token **tok_iter)
 {
 	t_token	*start;
 	t_token	*end;
 
 	start = *tok_iter;
 	end = *tok_iter;
-	assign_args_heredocs_find_end(&end);
+	while (end && end->type != TOKEN_PIPE)
+		end = end->next;
 	assign_args_heredocs_args(cmd, start, end);
 	assign_args_heredocs_heredocs(cmd, start, end);
-	*tok_iter = (end && end->type == TOKEN_PIPE) ? end->next : end;
+	if (end && end->type == TOKEN_PIPE)
+		*tok_iter = end->next;
+	else
+		*tok_iter = end;
 }
 
 void	assign_args_heredocs_loop(t_cmd *head, t_token *token_list)

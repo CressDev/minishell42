@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   expansion_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 11:10:15 by amonteag          #+#    #+#             */
-/*   Updated: 2026/01/18 13:38:02 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/19 11:40:01 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_var_name_with_eq(char *raw_token, int start, int end)
+static char	*get_var_name_with_eq(char *raw_token, int start, int end)
 {
 	char	*var_name;
 	char	*var_name_eq;
@@ -81,18 +81,4 @@ char	*var_value(char *raw_token, int start, int end, t_list *env)
 	if (!result)
 		write(2, "Error: malloc failed for var value\n", 36);
 	return (result);
-}
-
-t_cmd	*init_cmd(t_envs *envs)
-{
-	t_cmd	*cmd;
-
-	cmd = malloc(sizeof(t_cmd));
-	if (!cmd)
-		return (NULL);
-	ft_memset(cmd, 0, sizeof(t_cmd));
-	cmd->envs = envs;
-	cmd->args = NULL;
-	cmd->next = NULL;
-	return (cmd);
 }

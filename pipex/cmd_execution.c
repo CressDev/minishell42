@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 10:15:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/19 08:53:19 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/19 12:06:59 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ void	close_pipe_child(t_cmd *current, int *prev_fd, int pipefd[2],
 		close(pipefd[1]);
 }
 
-t_pipeinfo	setup_pipeline(int *prev_fd, int pipefd[2])
+t_pipe	setup_pipeline(int *prev_fd, int pipefd[2])
 {
-	t_pipeinfo	pipes;
+	t_pipe	pipes;
 
 	pipes.prev_fd = prev_fd;
 	pipes.pipefd[0] = pipefd[0];

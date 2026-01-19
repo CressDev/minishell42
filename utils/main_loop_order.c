@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   loop_order.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 16:40:13 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/10 16:40:54 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/19 12:19:22 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	handle_eof(char *line, int is_tty)
 	if (!line)
 	{
 		if (is_tty)
-			write(STDOUT_FILENO, "exit\n", 5);
+			write(STDOUT_FILENO, "closing minishell\n", 19);
 		return (true);
 	}
 	return (false);

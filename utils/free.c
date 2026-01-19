@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 09:26:07 by cress             #+#    #+#             */
-/*   Updated: 2026/01/18 13:40:59 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/19 11:43:31 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,23 @@ void	destroy_fsm(t_fsm **fsm)
 	(*fsm)->token = NULL;
 	free(*fsm);
 	*fsm = NULL;
+}
+
+void	free_tokens(t_token **tokens)
+{
+	t_token	*tmp;
+	t_token	*current;
+
+	if (!tokens || !*tokens)
+		return ;
+	current = *tokens;
+	while (current)
+	{
+		tmp = current->next;
+		if (current->content)
+			free(current->content);
+		free(current);
+		current = tmp;
+	}
+	*tokens = NULL;
 }

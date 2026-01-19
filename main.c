@@ -131,6 +131,8 @@ static void	shell_main_loop(t_envs *envs)
 		free_tokens(&tokens);
 		free(line);
 	}
+	if (line)
+		free(line);
 }
 
 int	main(int ac, char **av, char **environ)
@@ -157,4 +159,5 @@ int	main(int ac, char **av, char **environ)
 	shell_main_loop(envs);
 	free_env(env);
 	free(envs);
+	return (0);
 }

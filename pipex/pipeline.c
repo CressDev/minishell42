@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:52:04 by cress             #+#    #+#             */
-/*   Updated: 2026/01/18 13:37:19 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/19 12:07:51 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	wait_for_pipeline_completion(t_exec_data *exec_data)
 	restore_signal_handler(&sa_old);
 }
 
-static void	handle_parent_process(pid_t pid, t_pipeinfo *pipes, t_cmd *current,
+static void	handle_parent_process(pid_t pid, t_pipe *pipes, t_cmd *current,
 								t_exec_data *exec_data)
 {
 	exec_data->last_child_pid = pid;
@@ -51,7 +51,7 @@ int	execute_single_pipe_cmd(t_cmd *current, int *prev_fd, int pipefd[2],
 							t_exec_data *exec_data)
 {
 	pid_t		pid;
-	t_pipeinfo	pipes;
+	t_pipe		pipes;
 	int			out_fd;
 
 	if (current->next && pipe(pipefd) == -1)

@@ -6,11 +6,25 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:47:40 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/18 13:45:53 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/19 11:38:50 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static t_cmd	*init_cmd(t_envs *envs)
+{
+	t_cmd	*cmd;
+
+	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
+		return (NULL);
+	ft_memset(cmd, 0, sizeof(t_cmd));
+	cmd->envs = envs;
+	cmd->args = NULL;
+	cmd->next = NULL;
+	return (cmd);
+}
 
 t_cmd	*token_word(t_cmd *current, t_token *token, t_envs *envs)
 {
