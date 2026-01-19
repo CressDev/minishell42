@@ -6,13 +6,13 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 21:30:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/19 12:24:59 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/19 12:56:11 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	assign_args_heredocs_heredocs(t_cmd *cmd, t_token *start, t_token *end)
+static void	assign_args_heredocs(t_cmd *cmd, t_token *start, t_token *end)
 {
 	int	hcount;
 
@@ -44,7 +44,7 @@ static void	assign_args_heredocs_step(t_cmd *cmd, t_token **tok_iter)
 	while (end && end->type != TOKEN_PIPE)
 		end = end->next;
 	assign_args_heredocs_args(cmd, start, end);
-	assign_args_heredocs_heredocs(cmd, start, end);
+	assign_args_heredocs(cmd, start, end);
 	if (end && end->type == TOKEN_PIPE)
 		*tok_iter = end->next;
 	else
