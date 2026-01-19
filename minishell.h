@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/18 14:13:03 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/19 09:55:25 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef enum e_state
 	STATE_END,
 }	t_state;
 
-typedef enum e_token_type
+typedef enum e_type
 {
 	TOKEN_WORD,
 	TOKEN_PIPE,
@@ -54,7 +54,7 @@ typedef enum e_token_type
 	TOKEN_REDIR_OUT,
 	TOKEN_APPEND,
 	TOKEN_HEREDOC,
-}	t_token_type;
+}	t_type;
 
 /**
  * @struct s_fsm
@@ -87,17 +87,17 @@ typedef enum e_token_type
  */
 typedef struct s_fsm
 {
-	t_state			current_state; /**< Current state of FSM. */
-	t_state			prev_state; /**< Previous state of FSM. */
-	size_t			i_token; /**< Inner index of buffer. */
-	size_t			i_input; /**< Inner state of user input. */
-	size_t			i_len; /**< Lenght of the user input. */
-	size_t			token_capacity; /**< Int to represet initial buffer size */
-	bool			quote_flag; /**< Flag alert for quotes in FSM. */
-	bool			has_error; /**< Boolean to control error state. */
-	bool			has_content; /**< Boolean for the token creation. */
-	char			*input; /**< User input (readline). */
-	char			*token; /**< Buffer to construct tokens. */
+	t_state	current_state; /**< Current state of FSM. */
+	t_state	prev_state; /**< Previous state of FSM. */
+	size_t	i_token; /**< Inner index of buffer. */
+	size_t	i_input; /**< Inner state of user input. */
+	size_t	i_len; /**< Lenght of the user input. */
+	size_t	token_capacity; /**< Int to represet initial buffer size */
+	bool	quote_flag; /**< Flag alert for quotes in FSM. */
+	bool	has_error; /**< Boolean to control error state. */
+	bool	has_content; /**< Boolean for the token creation. */
+	char	*input; /**< User input (readline). */
+	char	*token; /**< Buffer to construct tokens. */
 }	t_fsm;
 
 /**
@@ -113,10 +113,11 @@ typedef struct s_fsm
  * - environ: Pointer to the original environment (array of strings),
  *            read-only. Represents the environment of the minishell.
  */
+
 typedef struct s_envs
 {
-	t_list			**env;
-	char			**environ;
+	t_list	**env;
+	char	**environ;
 }	t_envs;
 
 /**
@@ -140,7 +141,7 @@ typedef struct s_token
 {
 	char			*content; /**< Token to be interpreted. */
 	int				quote; /**< Quote type. */
-	t_token_type	type; /**< Type of the content (determined by enum). */
+	t_type			type; /**< Type of the content (determined by enum). */
 	struct s_token	*next; /**< Next token. */
 }	t_token;
 
@@ -203,119 +204,119 @@ typedef struct s_cmd
 
 typedef struct s_exec_data
 {
-	int				is_tty;
-	pid_t			last_child_pid;
+	int		is_tty;
+	pid_t	last_child_pid;
 }	t_exec_data;
 
-typedef struct s_pipeinfo
+typedef struct s_pipe
 {
-	int				*prev_fd;
-	int				pipefd[2];
-}	t_pipeinfo;
+	int	*prev_fd;
+	int	pipefd[2];
+}	t_pipe;
 
-bool			handle_eof(char *line, int is_tty);
-bool			handle_interrupt(char *line);
-bool			obtain_tokens(char *line, t_token **tokens);
-void			entry_point(char *input, t_token **tokens);
-t_fsm			*init_fsm(char *input);
-t_token_type	fsm_state_to_token_type(t_fsm *fsm);
+bool	handle_eof(char *line, int is_tty);
+bool	handle_interrupt(char *line);
+bool	obtain_tokens(char *line, t_token **tokens);
+void	entry_point(char *input, t_token **tokens);
+t_fsm	*init_fsm(char *input);
+t_type	fsm_state_to_token_type(t_fsm *fsm);
 typedef bool	(*t_state_handler)(t_fsm *, char, t_token **);
-bool			state_start(t_fsm *fsm, char c, t_token **tokens);
-bool			state_word(t_fsm *fsm, char c, t_token **tokens);
-bool			state_squote(t_fsm *fsm, char c, t_token **tokens);
-bool			state_dquote(t_fsm *fsm, char c, t_token **tokens);
-bool			state_pipe(t_fsm *fsm, char c, t_token **tokens);
-bool			state_end(t_fsm *fsm, char c, t_token **tokens);
-bool			state_redirect(t_fsm *fsm, char c, t_token **tokens);
-bool			state_error(t_fsm *fsm, char c, t_token **tokens);
-void			error_user_input(t_fsm *fsm, const char *line);
-void			default_state(t_fsm *fsm);
-void			create_token(t_fsm *fsm, t_token **tokens);
+bool	state_start(t_fsm *fsm, char c, t_token **tokens);
+bool	state_word(t_fsm *fsm, char c, t_token **tokens);
+bool	state_squote(t_fsm *fsm, char c, t_token **tokens);
+bool	state_dquote(t_fsm *fsm, char c, t_token **tokens);
+bool	state_pipe(t_fsm *fsm, char c, t_token **tokens);
+bool	state_end(t_fsm *fsm, char c, t_token **tokens);
+bool	state_redirect(t_fsm *fsm, char c, t_token **tokens);
+bool	state_error(t_fsm *fsm, char c, t_token **tokens);
+void	error_user_input(t_fsm *fsm, const char *line);
+void	default_state(t_fsm *fsm);
+void	create_token(t_fsm *fsm, t_token **tokens);
 
-t_token			*init_token(t_fsm *fsm, int quoted);
-void			token_append_str(t_fsm *fsm, const char *str, t_token **tokens);
-void			token_append_char(t_fsm *fsm, const char c, t_token **tokens);
-void			expand_token_buffer(t_fsm *fsm, t_token **tokens);
-void			token_add_back(t_token **tokens, t_token *new);
-void			free_tokens(t_token **tokens);
-t_cmd			*token_word(t_cmd *current, t_token *token, t_envs *envs);
-t_cmd			*token_pipe(t_envs *envs, t_cmd *current);
-void			token_redirect(t_cmd *current, t_token *token);
+t_token	*init_token(t_fsm *fsm, int quoted);
+void	token_append_str(t_fsm *fsm, const char *str, t_token **tokens);
+void	token_append_char(t_fsm *fsm, const char c, t_token **tokens);
+void	expand_token_buffer(t_fsm *fsm, t_token **tokens);
+void	token_add_back(t_token **tokens, t_token *new);
+void	free_tokens(t_token **tokens);
+t_cmd	*token_word(t_cmd *current, t_token *token, t_envs *envs);
+t_cmd	*token_pipe(t_envs *envs, t_cmd *current);
+void	token_redirect(t_cmd *current, t_token *token);
 
-t_cmd			*init_cmd(t_envs *envs);
-t_cmd			*parse_tokens(t_token *token, t_envs *envs);
-void			expand_token(t_token *token, t_envs *envs);
-void			restore_fds(int saved_stdin, int saved_stdout, int input_fd,
-					int output_fd);
-void			execute_redir(t_cmd *cmd, int is_tty);
-int				setup_input_redirect(t_cmd *cmd);
-int				setup_output_redirect(t_cmd *cmd);
-int				setup_all_heredocs(t_cmd *cmd, int is_tty);
-void			commands(t_token **tokens, t_envs *envs, int is_tty);
+t_cmd	*init_cmd(t_envs *envs);
+t_cmd	*parse_tokens(t_token *token, t_envs *envs);
+void	expand_token(t_token *token, t_envs *envs);
+void	restore_fds(int saved_stdin, int saved_stdout, int input_fd,
+			int output_fd);
+void	execute_redir(t_cmd *cmd, int is_tty);
+int		setup_input_redirect(t_cmd *cmd);
+int		setup_output_redirect(t_cmd *cmd);
+int		setup_all_heredocs(t_cmd *cmd, int is_tty);
+void	commands(t_token **tokens, t_envs *envs, int is_tty);
 
-void			close_pipe_child(t_cmd *current, int *prev_fd, int pipefd[2],
-					int *out_fd);
-void			execute_pipeline(t_cmd *cmd, int is_tty);
-void			execute_pipeline_child(t_cmd *cmd, int input_fd, int output_fd,
-					t_exec_data *exec_data);
-void			setup_pipe_redirections(int input_fd, int output_fd);
-void			setup_file_redirections(t_cmd *cmd, int file_fd, int is_tty);
-t_pipeinfo		setup_pipeline(int *prev_fd, int pipefd[2]);
+void	close_pipe_child(t_cmd *current, int *prev_fd, int pipefd[2],
+			int *out_fd);
+void	execute_pipeline(t_cmd *cmd, int is_tty);
+void	execute_pipeline_child(t_cmd *cmd, int input_fd, int output_fd,
+			t_exec_data *exec_data);
+void	setup_pipe_redirections(int input_fd, int output_fd);
+void	setup_file_redirections(t_cmd *cmd, int file_fd, int is_tty);
+t_pipe	setup_pipeline(int *prev_fd, int pipefd[2]);
 
-int				get_in_readline_state(void);
-void			set_in_readline_state(int state);
-void			install_sigint_wait_handler(struct sigaction *old);
-void			restore_signal_handler(struct sigaction *old_sa);
-void			set_continuation_signal_handler(struct sigaction *old_sa);
-void			signal_handler(int sig);
-void			signal_ctlc_heredoc(int sig);
-void			signal_ctlc_continuation(int sig);
+int		get_in_readline_state(void);
+void	set_in_readline_state(int state);
+void	install_sigint_wait_handler(struct sigaction *old);
+void	restore_signal_handler(struct sigaction *old_sa);
+void	set_continuation_signal_handler(struct sigaction *old_sa);
+void	signal_handler(int sig);
+void	signal_ctlc_heredoc(int sig);
+void	signal_ctlc_continuation(int sig);
 
-void			env_command(t_cmd *cmd);
-void			pwd_command(void);
-void			exit_command(t_cmd *cmd);
-void			unset_command(t_cmd *cmd);
-void			export_command(t_cmd *cmd);
-void			echo_command(t_cmd *cmd);
-void			cd_command(t_cmd *cmd);
-void			ch_dir(t_list **env, char *cur_dir, char *path);
-void			chenv(t_list **env, char *new_dir, char *cur_dir);
-void			ch_oldpwd_case(t_list **env, char *cur_dir);
-void			direct_execute(t_cmd *cmd);
-bool			is_built_in(t_cmd *cmd);
-bool			handler_var(t_list **env, char *word, int size);
-void			add_new_var(t_list **env, char *word);
-int				is_valid_identifier(const char *str);
-bool			handler_var(t_list **env, char *word, int size);
-void			add_new_var(t_list **env, char *word);
-void			order_env(t_list *env);
+void	env_command(t_cmd *cmd);
+void	pwd_command(void);
+void	exit_command(t_cmd *cmd);
+void	unset_command(t_cmd *cmd);
+void	export_command(t_cmd *cmd);
+void	echo_command(t_cmd *cmd);
+void	cd_command(t_cmd *cmd);
+void	ch_dir(t_list **env, char *cur_dir, char *path);
+void	chenv(t_list **env, char *new_dir, char *cur_dir);
+void	ch_oldpwd_case(t_list **env, char *cur_dir);
+void	direct_execute(t_cmd *cmd);
+bool	is_built_in(t_cmd *cmd);
+bool	handler_var(t_list **env, char *word, int size);
+void	add_new_var(t_list **env, char *word);
+int		is_valid_identifier(const char *str);
+bool	handler_var(t_list **env, char *word, int size);
+void	add_new_var(t_list **env, char *word);
+void	order_env(t_list *env);
 
-char			*find_command_in_path(char *command, t_list *env);
-char			*check_direct_path(char *command);
-char			*search_in_path_env(char *command, char **paths);
-char			*get_value(t_list *lst, char *str);
-char			*create_double_operator_token(char operator);
-char			*create_single_operator_token(char operator);
+char	*find_command_in_path(char *command, t_list *env);
+char	*check_direct_path(char *command);
+char	*search_in_path_env(char *command, char **paths);
+char	*get_value(t_list *lst, char *str);
+char	*create_double_operator_token(char operator);
+char	*create_single_operator_token(char operator);
 
-char			*get_var_name_with_eq(char *raw_token, int start, int end);
-char			*handle_special_vars(char *raw_token, int *pos);
-char			*var_value(char *raw_token, int start, int end, t_list *env);
+char	*get_var_name_with_eq(char *raw_token, int start, int end);
+char	*handle_special_vars(char *raw_token, int *pos);
+char	*var_value(char *raw_token, int start, int end, t_list *env);
 
-char			*get_display_path(char *pwd, char *home);
-char			*join_with_color(char *color, char *text, char *reset);
-char			*build_prompt_parts(char *user_colored, char *path_colored);
-char			*get_current_pwd(t_list *env);
-char			*create_prompt(t_list *env);
+char	*get_display_path(char *pwd, char *home);
+char	*join_with_color(char *color, char *text, char *reset);
+char	*build_prompt_parts(char *user_colored, char *path_colored);
+char	*get_current_pwd(t_list *env);
+char	*create_prompt(t_list *env);
 
-void			free_mem(char **str);
-void			free_env(t_list **env);
-void			free_cmd_start(t_cmd **cmd);
-void			destroy_fsm(t_fsm **fsm);
+void	free_mem(char **str);
+void	free_env(t_list **env);
+void	free_cmd_start(t_cmd **cmd);
+void	destroy_fsm(t_fsm **fsm);
 
-int				count_args_in_range(t_token *start, t_token *end);
-void			fill_args_in_range(t_cmd *cmd, t_token *start, t_token *end);
-int				count_heredocs_in_range(t_token *start, t_token *end);
-void			fill_heredocs(t_cmd *cmd, t_token *start, t_token *end);
-void			assign_args_heredocs_loop(t_cmd *head, t_token *token_list);
+int		count_args_in_range(t_token *start, t_token *end);
+void	fill_args_in_range(t_cmd *cmd, t_token *start, t_token *end);
+int		count_heredocs_in_range(t_token *start, t_token *end);
+void	fill_heredocs(t_cmd *cmd, t_token *start, t_token *end);
+void	assign_args_heredocs_loop(t_cmd *head, t_token *token_list);
 
 #endif

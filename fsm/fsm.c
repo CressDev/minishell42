@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:21:52 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/18 14:32:32 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/19 09:30:30 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	fsm_dispatcher(t_fsm *fsm, t_token **tokens)
 {
 	char					c;
 	bool					consume;
-	static t_state_handler	g_handlers[] = {
+	static t_handler	g_handlers[] = {
 		state_start,
 		state_word,
 		state_squote,

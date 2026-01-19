@@ -1,26 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   built_in_export_utils.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/19 08:42:50 by kjroydev          #+#    #+#             */
+/*   Updated: 2026/01/19 08:48:46 by kjroydev         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	is_valid_identifier(const char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
-		return 0;
+		return (0);
 	while (str[i] && str[i] != '=')
 	{
 		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return 0;
+			return (0);
 		i++;
 	}
-	return 1;
+	return (1);
 }
 
 bool	handler_var(t_list **env, char *word, int size)
 {
-	t_list *current;
-	char *new_content;
-	char *old_content;
+	t_list	*current;
+	char	*new_content;
+	char	*old_content;
 
 	current = *env;
 	new_content = ft_strdup(word);
@@ -44,8 +56,8 @@ bool	handler_var(t_list **env, char *word, int size)
 
 void	add_new_var(t_list **env, char *word)
 {
-	t_list *new_node;
-	char *new_content;
+	t_list	*new_node;
+	char	*new_content;
 
 	new_content = ft_strdup(word);
 	if (!new_content)
@@ -58,9 +70,9 @@ void	add_new_var(t_list **env, char *word)
 
 void	order_env(t_list *env)
 {
-	t_list *current;
-	t_list *cur;
-	char *aux;
+	t_list	*current;
+	t_list	*cur;
+	char	*aux;
 
 	current = env;
 	while (current && current->next != NULL)

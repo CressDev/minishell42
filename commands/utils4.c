@@ -6,13 +6,12 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 21:30:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/18 13:39:34 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/19 08:52:31 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Helpers de asignación de argumentos y heredocs
 void	assign_args_heredocs_heredocs(t_cmd *cmd, t_token *start, t_token *end)
 {
 	int	hcount;

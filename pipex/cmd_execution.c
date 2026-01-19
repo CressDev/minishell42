@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 10:15:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/18 13:37:06 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/19 08:53:19 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ t_pipeinfo	setup_pipeline(int *prev_fd, int pipefd[2])
 
 void	setup_file_redirections(t_cmd *cmd, int file_fd, int is_tty)
 {
-	// Removed debug log
 	if (cmd->is_heredoc || cmd->input_file)
 	{
 		if (cmd->is_heredoc)

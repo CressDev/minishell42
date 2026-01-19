@@ -3,29 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 23:19:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/18 07:58:56 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/19 08:56:52 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int is_valid_identifier(const char *str)
+static int	is_valid_identifier(const char *str)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	if (!str || (!isalpha(str[0]) && str[0] != '_'))
-		return 0;
+		return (0);
 	while (str[i] && str[i] != '=')
 	{
 		if (!isalnum(str[i]) && str[i] != '_')
-			return 0;
+			return (0);
 		i++;
 	}
-	return 1;
+	return (1);
 }
- 
+
 bool	handler_var(t_list **env, char *word, int size)
 {
 	t_list	*current;
@@ -58,7 +60,7 @@ void	add_new_var(t_list **env, char *word)
 	char	*new_content;
 
 	if (!ft_strchr(word, '='))
-		return;
+		return ;
 	new_content = ft_strdup(word);
 	if (!new_content)
 		return (perror("export"), g_signal = 1, (void)0);
@@ -68,7 +70,7 @@ void	add_new_var(t_list **env, char *word)
 	ft_lstadd_back(env, new_node);
 }
 
-static void export_process_args(t_list **env, char **words)
+static void	export_process_args(t_list **env, char **words)
 {
 	int		i;
 	char	*eq;
@@ -119,4 +121,3 @@ void	export_command(t_list **env, char **words)
 	else
 		export_process_args(env, words);
 }
-

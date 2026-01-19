@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:13:57 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/16 14:42:29 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/19 09:30:54 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_fsm	*init_fsm(char *input)
 	return (fsm);
 }
 
-t_token_type	fsm_state_to_token_type(t_fsm *fsm)
+t_type	fsm_state_to_token_type(t_fsm *fsm)
 {
 	if (fsm->current_state == STATE_PIPE)
 		return (TOKEN_PIPE);

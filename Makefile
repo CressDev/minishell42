@@ -6,7 +6,7 @@
 #    By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 10:19:55 by cress             #+#    #+#              #
-#    Updated: 2026/01/18 14:11:53 by kjroydev         ###   ########.fr        #
+#    Updated: 2026/01/19 09:34:59 by kjroydev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,8 +34,7 @@ SRC			=	commands/built_in_cd.c			\
 				commands/utils2.c				\
 				commands/utils3.c				\
 				commands/utils4.c				\
-				commands/parse_steps.c				\
-				commands/fsm_args_helper.c		\
+				commands/parse_steps.c			\
 				execve/execution.c				\
 				execve/utils.c					\
 				fsm/error_handler.c				\
