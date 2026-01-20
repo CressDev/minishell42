@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:13:57 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/19 09:30:54 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/20 23:08:59 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,5 @@ void	create_token(t_fsm *fsm, t_token **tokens)
 	fsm->i_token = 0;
 	fsm->token[0] = 0;
 	fsm->has_content = false;
+	fsm->prev_state = fsm->current_state;
 }

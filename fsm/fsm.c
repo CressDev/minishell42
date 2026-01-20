@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fsm.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmarrero <kmarrero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:21:52 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/19 21:30:43 by kmarrero         ###   ########.fr       */
+/*   Updated: 2026/01/21 00:25:53 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,23 @@ static void	fsm_dispatcher(t_fsm *fsm, t_token **tokens)
 void	entry_point(char *input, t_token **tokens)
 {
 	t_fsm	*fsm;
+	char	error;
 
 	*tokens = NULL;
 	fsm = init_fsm(input);
 	if (!fsm)
 		return ;
 	fsm_dispatcher(fsm, tokens);
+	if (pipe_syntax_error(tokens))
+		return (state_error(fsm, '|', tokens), (void)0);
+	while (pipe_is_incomplete(tokens))
+	{
+		error_user_input(fsm, "pipe> ");
+		default_state(fsm);
+		fsm_dispatcher(fsm, tokens);
+	}
+	error = redir_syntax_error(tokens);
+	if (error)
+		return (state_error(fsm, error, tokens), (void)0);
 	destroy_fsm(&fsm);
 }

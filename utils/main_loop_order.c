@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   loop_order.c                                       :+:      :+:    :+:   */
+/*   main_loop_order.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 16:40:13 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/19 12:19:22 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/21 00:44:30 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ bool	handle_interrupt(char *line)
 bool	obtain_tokens(char *line, t_token **tokens)
 {
 	entry_point(line, tokens);
-	if (!tokens)
+	if (!*tokens)
 	{
 		free(line);
 		return (false);

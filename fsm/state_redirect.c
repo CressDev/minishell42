@@ -6,26 +6,32 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:56:09 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/18 14:30:58 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/20 23:51:43 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool	error_handler(t_fsm *fsm)
+char	redir_syntax_error(t_token **tokens)
 {
-	size_t	i;
+	t_token	*curr;
 
-	i = 0;
-	while (fsm->input[i] == ' ')
-		i++;
-	if (fsm->input[i] == '\0' || fsm->input[i] == '\n')
+	curr = *tokens;
+	while (curr)
 	{
-		fsm->current_state = STATE_ERROR;
-		state_error(fsm, '\0', NULL);
-		return (false);
+		if (curr->type == TOKEN_APPEND
+			|| curr->type == TOKEN_HEREDOC
+			|| curr->type == TOKEN_REDIR_IN
+			|| curr->type == TOKEN_REDIR_OUT)
+		{
+			if (!curr->next)
+				return ('\n');
+			if (curr->next->type != TOKEN_WORD)
+				return (curr->content[0]);
+		}
+		curr = curr->next;
 	}
-	return (true);
+	return ('\0');
 }
 
 bool	state_redirect(t_fsm *fsm, char c, t_token **tokens)
@@ -41,15 +47,7 @@ bool	state_redirect(t_fsm *fsm, char c, t_token **tokens)
 		token_append_str(fsm, "<<", tokens);
 	else if (c == '<')
 		token_append_char(fsm, c, tokens);
-	else
-	{
-		fsm->current_state = STATE_ERROR;
-		state_error(fsm, c, NULL);
-		return (false);
-	}
 	create_token(fsm, tokens);
-	if (!error_handler(fsm))
-		return (false);
 	fsm->current_state = STATE_START;
 	if ((c == '>' && next == '>') || (c == '<' && next == '<'))
 		fsm->i_input++;
