@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:21:52 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/21 00:25:53 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/22 00:40:43 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	fsm_dispatcher(t_fsm *fsm, t_token **tokens)
 void	entry_point(char *input, t_token **tokens)
 {
 	t_fsm	*fsm;
-	char	error;
+	t_token	*error_tok;
 
 	*tokens = NULL;
 	fsm = init_fsm(input);
@@ -71,8 +71,11 @@ void	entry_point(char *input, t_token **tokens)
 		default_state(fsm);
 		fsm_dispatcher(fsm, tokens);
 	}
-	error = redir_syntax_error(tokens);
-	if (error)
-		return (state_error(fsm, error, tokens), (void)0);
+	error_tok = redir_syntax_error(tokens);
+	if (error_tok)
+	{
+		show_syntax(fsm, error_tok, tokens);
+		return ;
+	}
 	destroy_fsm(&fsm);
 }

@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 18:54:59 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/17 14:57:45 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/22 00:37:08 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	error_user_input(t_fsm *fsm, const char *line)
 	ft_strlcpy(new_input, fsm->input, len);
 	ft_strlcat(new_input, extra, len);
 	free(extra);
+	free(fsm->input);
 	fsm->input = new_input;
 }
 

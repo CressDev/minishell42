@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/21 00:26:44 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/22 00:16:46 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,8 @@ bool	state_error(t_fsm *fsm, char c, t_token **tokens);
 void	create_token(t_fsm *fsm, t_token **tokens);
 bool	pipe_is_incomplete(t_token **tokens);
 bool	pipe_syntax_error(t_token **tokens);
-char	redir_syntax_error(t_token **tokens);
+t_token	*redir_syntax_error(t_token **tokens);
+void	show_syntax(t_fsm *fsm, t_token *error, t_token **tokens);
 void	error_user_input(t_fsm *fsm, const char *line);
 void	default_state(t_fsm *fsm);
 bool	pipe_is_incomplete(t_token **tokens);

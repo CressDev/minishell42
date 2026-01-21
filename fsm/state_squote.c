@@ -6,13 +6,13 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:33:52 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/21 22:25:29 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/21 23:35:19 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void_create(t_fsm *fsm, t_token **tokens)
+static void	void_create(t_fsm *fsm, t_token **tokens)
 {
 	fsm->prev_state = STATE_SQUOTE;
 	fsm->current_state = STATE_WORD;
@@ -25,7 +25,7 @@ bool	state_squote(t_fsm *fsm, char c, t_token **tokens)
 {
 	if (c == '\'' && fsm->quote_flag)
 	{
-		create(fsm, tokens);
+		void_create(fsm, tokens);
 		return (true);
 	}
 	else if (c == '\'' && !fsm->quote_flag)
