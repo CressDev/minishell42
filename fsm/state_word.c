@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:44:40 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/18 14:31:21 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/21 22:22:54 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ bool	state_word(t_fsm *fsm, char c, t_token **tokens)
 	else if (c == '\'')
 	{
 		fsm->current_state = STATE_SQUOTE;
-		return (false);
+		return (true);
 	}
 	else if (c == '\"')
 	{
 		fsm->current_state = STATE_DQUOTE;
-		return (false);
+		return (true);
 	}
 	token_append_char(fsm, c, tokens);
 	return (true);
