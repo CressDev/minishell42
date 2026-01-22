@@ -120,13 +120,13 @@ static void	shell_main_loop(t_envs *envs)
 	{
 		tokens = NULL;
 		line = read_input(*envs->env, is_tty);
+		add_history(line);
 		if (handle_eof(line, is_tty))
 			break ;
 		if (handle_interrupt(line))
 			continue ;
 		if (!obtain_tokens(line, &tokens))
 			continue ;
-		add_history(line);
 		if (tokens)
 			commands(&tokens, envs, is_tty);
 		free_tokens(&tokens);
