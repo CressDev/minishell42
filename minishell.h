@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/22 00:16:46 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/22 13:03:55 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ typedef struct s_fsm
  * - environ: Pointer to the original environment (array of strings),
  *            read-only. Represents the environment of the minishell.
  */
-
 typedef struct s_envs
 {
 	t_list	**env;
