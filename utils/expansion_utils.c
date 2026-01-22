@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amonteag <amonteag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 11:10:15 by amonteag          #+#    #+#             */
-/*   Updated: 2026/01/19 11:40:01 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/22 21:35:57 by amonteag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,54 @@ char	*var_value(char *raw_token, int start, int end, t_list *env)
 	if (!result)
 		write(2, "Error: malloc failed for var value\n", 36);
 	return (result);
+}
+
+static void	add_split_tokens_after(t_token *start, char **split, t_token *next)
+{
+	t_token	*last_new;
+	t_token	*new;
+	int		i;
+
+	last_new = start;
+	i = 1;
+	while (split[i])
+	{
+		new = (t_token *)ft_calloc(1, sizeof(t_token));
+		if (!new)
+			break ;
+		new->content = ft_strdup(split[i]);
+		if (!new->content)
+			return (free_mem(split));
+		new->type = TOKEN_WORD;
+		new->quote = 0;
+		new->next = NULL;
+		last_new->next = new;
+		last_new = new;
+		i++;
+	}
+	last_new->next = next;
+}
+
+void	split_token_if_needed(t_token *token)
+{
+	char	**split;
+	t_token	*next;
+
+	if (!token || !token->content)
+		return ;
+	if (token->quote == 0 && ft_strchr(token->content, ' '))
+	{
+		split = ft_split(token->content, ' ');
+		if (!split)
+			return ;
+		if (!split[0] || split[0][0] == '\0')
+			return (free_mem(split));
+		next = token->next;
+		free(token->content);
+		token->content = ft_strdup(split[0]);
+		if (!token->content)
+			return (free_mem(split));
+		add_split_tokens_after(token, split, next);
+		free_mem(split);
+	}
 }
