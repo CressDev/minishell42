@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:48:56 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/21 00:43:07 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/22 01:22:57 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ bool	pipe_syntax_error(t_token **tokens)
 		{
 			if (!prev)
 				return (true);
-			if (!current->next)
-				continue ;
-			if (current->next->type == TOKEN_PIPE)
+			if (current->next && current->next->type == TOKEN_PIPE)
 				return (true);
 		}
 		prev = current;
