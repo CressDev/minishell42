@@ -134,6 +134,7 @@ static void	shell_main_loop(t_envs *envs)
 	}
 	if (line)
 		free(line);
+	clear_history();
 }
 
 int	main(int ac, char **av, char **environ)
