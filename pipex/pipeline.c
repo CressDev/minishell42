@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:52:04 by cress             #+#    #+#             */
-/*   Updated: 2026/01/19 12:07:51 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/23 19:27:25 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,10 @@ int	execute_single_pipe_cmd(t_cmd *current, int *prev_fd, int pipefd[2],
 	{
 		close_pipe_child(current, prev_fd, pipefd, &out_fd);
 		execute_pipeline_child(current, *prev_fd, out_fd, exec_data);
+		free_env(current->envs->env);
+		free(current->envs);
+		free_cmd_start(&current);
+		clear_history();
 		exit(g_signal);
 	}
 	else if (pid > 0)

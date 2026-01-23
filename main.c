@@ -129,7 +129,6 @@ static void	shell_main_loop(t_envs *envs)
 			continue ;
 		if (tokens)
 			commands(&tokens, envs, is_tty);
-		free_tokens(&tokens);
 		free(line);
 	}
 	if (line)
