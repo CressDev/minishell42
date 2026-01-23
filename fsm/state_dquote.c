@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:29:27 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/21 22:25:38 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/23 17:13:57 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ bool	state_dquote(t_fsm *fsm, char c, t_token **tokens)
 	}
 	else if (c == '\0' && fsm->quote_flag)
 	{
-		error_user_input(fsm, "dquote> ");
+		if (!error_user_input(fsm, "dquote> "))
+			return (free_tokens(tokens), false);
 		free_tokens(tokens);
 		default_state(fsm);
 		return (false);

@@ -6,37 +6,54 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 18:54:59 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/22 00:37:08 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/23 17:18:18 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	error_user_input(t_fsm *fsm, const char *line)
+static char	*error_readline_handler(t_fsm *fsm, const char *line)
+{
+	char	*extra;
+
+	signal(SIGINT, &signal_ctlc_continuation);
+	extra = readline(line);
+	signal(SIGINT, &signal_handler);
+	if (!extra || g_signal == 130)
+	{
+		if (extra)
+			free(extra);
+		fsm->current_state = STATE_ERROR;
+		fsm->has_error = true;
+		g_signal = 0;
+		return (NULL);
+	}
+	return (extra);
+}
+
+bool	error_user_input(t_fsm *fsm, const char *line)
 {
 	char	*extra;
 	char	*new_input;
 	size_t	len;
 
-	extra = readline(line);
+	extra = error_readline_handler(fsm, line);
 	if (!extra)
-	{
-		fsm->current_state = STATE_ERROR;
-		state_error(fsm, '\0', NULL);
-		return ;
-	}
+		return (false);
 	len = ft_strlen(fsm->input) + ft_strlen(extra) + 2;
 	new_input = malloc(len);
 	if (!new_input)
 	{
 		free(extra);
-		return ;
+		return (false);
 	}
 	ft_strlcpy(new_input, fsm->input, len);
+	ft_strlcat(new_input, "\n", len);
 	ft_strlcat(new_input, extra, len);
 	free(extra);
 	free(fsm->input);
 	fsm->input = new_input;
+	return (true);
 }
 
 void	default_state(t_fsm *fsm)

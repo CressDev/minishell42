@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:21:52 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/22 00:40:43 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:51:30 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ void	entry_point(char *input, t_token **tokens)
 		return (state_error(fsm, '|', tokens), (void)0);
 	while (pipe_is_incomplete(tokens))
 	{
-		error_user_input(fsm, "pipe> ");
+		if (!error_user_input(fsm, "pipe> "))
+			return (destroy_fsm(&fsm), free_tokens(tokens), (void)0);
 		default_state(fsm);
 		fsm_dispatcher(fsm, tokens);
 	}
