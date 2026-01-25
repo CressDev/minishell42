@@ -66,5 +66,9 @@ They were mainly consulted during the early stages of the project to better unde
 
 - Common syntax errors made by users
 
+- How to use Markdown in order to edit this readme, to make italic, bold and change the size of the text.
+
+- Memory handling in child process for pipes file descriptors (FD).
+
 These tools were also used to assist in debugging by helping identify potential causes of errors.  
 All architectural decisions, logic design, and code implementation were done manually by ourselfes.
