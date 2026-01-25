@@ -57,9 +57,13 @@ https://www.youtube.com/watch?v=KM5sRWAYqaw&pp=ygUWbGludXggZmlsZSBkZXNjcmlwdG9yc
 Additionally, AI tools such as GitHub Copilot and ChatGPT were used **strictly as learning and research aids**.
 
 They were mainly consulted during the early stages of the project to better understand theoretical concepts related to compilers and shells, such as:
+
 - What a compiler is and how it works
+
 - The purpose and structure of a **Finite State Machine (FSM)**
+
 - How Bash handles quotes and tokenization
+
 - Common syntax errors made by users
 
 These tools were also used to assist in debugging by helping identify potential causes of errors.  
