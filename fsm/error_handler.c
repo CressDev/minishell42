@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 18:54:59 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/23 17:18:18 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/26 21:01:17 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@ static char	*error_readline_handler(t_fsm *fsm, const char *line)
 {
 	char	*extra;
 
-	signal(SIGINT, &signal_ctlc_continuation);
 	extra = readline(line);
-	signal(SIGINT, &signal_handler);
 	if (!extra || g_signal == 130)
 	{
 		if (extra)

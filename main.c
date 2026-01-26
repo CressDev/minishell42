@@ -120,7 +120,8 @@ static void	shell_main_loop(t_envs *envs)
 	{
 		tokens = NULL;
 		line = read_input(*envs->env, is_tty);
-		add_history(line);
+		if (line && line[0] != '\0')
+			add_history(line);
 		if (handle_eof(line, is_tty))
 			break ;
 		if (handle_interrupt(line))
@@ -144,7 +145,7 @@ int	main(int ac, char **av, char **environ)
 	(void)av;
 	if (ac > 1)
 		return (1);
-	rl_catch_signals = 0;
+	
 	if (isatty(STDIN_FILENO))
 		show_init_ms();
 	signal(SIGINT, &signal_handler);
