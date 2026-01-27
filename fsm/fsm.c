@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:21:52 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/23 16:51:30 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/27 19:11:43 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	fsm_dispatcher(t_fsm *fsm, t_token **tokens)
 	while (fsm->i_input <= fsm->i_len)
 	{
 		if (fsm->current_state == STATE_ERROR)
-			return ;
+			return (free_tokens(tokens), (void)0);
 		c = fsm->input[fsm->i_input];
 		consume = g_handlers[fsm->current_state](fsm, c, tokens);
 		if (consume)
@@ -63,14 +63,12 @@ void	entry_point(char *input, t_token **tokens)
 	if (!fsm)
 		return ;
 	fsm_dispatcher(fsm, tokens);
-	if (pipe_syntax_error(tokens))
-		return (state_error(fsm, '|', tokens), (void)0);
-	while (pipe_is_incomplete(tokens))
+	if (pipe_syntax_error(tokens) || pipe_is_incomplete(tokens))
 	{
-		if (!error_user_input(fsm, "pipe> "))
-			return (destroy_fsm(&fsm), free_tokens(tokens), (void)0);
-		default_state(fsm);
-		fsm_dispatcher(fsm, tokens);
+		state_error(fsm, '|', tokens);
+		destroy_fsm(&fsm);
+		free_tokens(tokens);
+		return ;
 	}
 	error_tok = redir_syntax_error(tokens);
 	if (error_tok)

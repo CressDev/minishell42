@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 20:01:53 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/22 12:53:52 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/27 21:22:19 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,24 @@ void	token_append_char(t_fsm *fsm, const char c, t_token **tokens)
 		fsm->token[fsm->i_token++] = c;
 	fsm->token[fsm->i_token] = '\0';
 	fsm->has_content = (fsm->i_token > 0);
+}
+
+void	expand_token_buffer(t_fsm *fsm, t_token **tokens)
+{
+	size_t	new_size;
+	char	*new_buffer;
+
+	new_size = fsm->token_capacity * 2;
+	new_buffer = malloc(new_size);
+	if (!new_buffer)
+	{
+		destroy_fsm(&fsm);
+		free_tokens(tokens);
+		write(2, "minishell: memory allocation error\n", 35);
+		exit(1);
+	}
+	ft_memcpy(new_buffer, fsm->token, fsm->i_token);
+	free(fsm->token);
+	fsm->token = new_buffer;
+	fsm->token_capacity = new_size;
 }

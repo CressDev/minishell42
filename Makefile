@@ -20,7 +20,6 @@ SRC			=	commands/built_in_cd.c		\
 				commands/redirect_heredoc.c	\
 				commands/redirect.c			\
 				execve/execution.c			\
-				fsm/error_handler.c			\
 				fsm/fsm.c					\
 				fsm/state_dquote.c			\
 				fsm/state_end.c				\
