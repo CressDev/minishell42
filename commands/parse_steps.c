@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_steps.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 21:40:00 by cress             #+#    #+#             */
-/*   Updated: 2026/01/18 14:18:13 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/27 18:17:18 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static void	cmd_words(t_cmd **head, t_cmd **cmd, t_token **token, t_envs *envs)
 static void	cmd_step(t_cmd **head, t_cmd **cmd, t_token **token, t_envs *envs)
 {
 	expand_token(*token, envs);
+	split_token_if_needed(*token);
 	if ((*token)->type == TOKEN_WORD)
 		cmd_words(head, cmd, token, envs);
 	else if ((*token)->type == TOKEN_PIPE)

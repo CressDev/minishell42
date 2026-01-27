@@ -53,6 +53,7 @@ Shell Command Language
 Scanning · Crafting Interpreters
 8. Pipes — GNU/Linux para Bioinformática
 https://www.youtube.com/watch?v=KM5sRWAYqaw&pp=ygUWbGludXggZmlsZSBkZXNjcmlwdG9ycw%3D%3D
+Man in terminal for the builtns leaarninig
 
 Additionally, AI tools such as GitHub Copilot and ChatGPT were used **strictly as learning and research aids**.
 
@@ -69,6 +70,8 @@ They were mainly consulted during the early stages of the project to better unde
 - How to use Markdown in order to edit this readme, to make italic, bold and change the size of the text.
 
 - Memory handling in child process for pipes file descriptors (FD).
+
+- The purpose and operation of pipes and redirections.
 
 These tools were also used to assist in debugging by helping identify potential causes of errors.  
 All architectural decisions, logic design, and code implementation were done manually by ourselfes.

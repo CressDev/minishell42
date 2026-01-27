@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 10:21:38 by cress             #+#    #+#             */
-/*   Updated: 2026/01/23 16:53:38 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/26 18:45:36 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	signal_ctlc_continuation(int sig)
 {
 	if (sig == SIGINT)
 	{
+		write(1, "\n", 1);
 		rl_replace_line("", 0);
-		rl_done = 1;
 		g_signal = 130;
 	}
 }

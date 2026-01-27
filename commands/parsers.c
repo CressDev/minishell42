@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:47:40 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/19 11:38:50 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/27 19:02:12 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,11 @@ void	token_redirect(t_cmd *current, t_token *token)
 	if (!current || !token || !token->next)
 		return ;
 	if (token->type == TOKEN_REDIR_IN)
+	{
+		if (current->input_file)
+			free(current->input_file);
 		current->input_file = ft_strdup(token->next->content);
+	}
 	else if (token->type == TOKEN_REDIR_OUT || token->type == TOKEN_APPEND)
 	{
 		if (current->output_file)
