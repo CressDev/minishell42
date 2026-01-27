@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:30 by cress             #+#    #+#             */
-/*   Updated: 2026/01/23 16:42:29 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/27 18:17:24 by cress            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,6 +310,7 @@ char	*create_single_operator_token(char operator);
 
 char	*handle_special_vars(char *raw_token, int *pos);
 char	*var_value(char *raw_token, int start, int end, t_list *env);
+void	split_token_if_needed(t_token *token);
 
 char	*get_display_path(char *pwd, char *home);
 char	*join_with_color(char *color, char *text, char *reset);
