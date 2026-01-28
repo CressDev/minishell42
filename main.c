@@ -145,7 +145,6 @@ int	main(int ac, char **av, char **environ)
 	(void)av;
 	if (ac > 1)
 		return (1);
-	
 	if (isatty(STDIN_FILENO))
 		show_init_ms();
 	signal(SIGINT, &signal_handler);

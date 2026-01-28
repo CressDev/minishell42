@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_loop_order.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cress <cress@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 16:40:13 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/26 22:31:13 by cress            ###   ########.fr       */
+/*   Updated: 2026/01/28 12:32:53 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,6 @@ bool	handle_eof(char *line, int is_tty)
  */
 bool	handle_interrupt(char *line)
 {
-	/*
-	 * g_signal también se usa como exit status ($?).
-	 * NO podemos comparar con SIGINT (2) porque muchos comandos fallan con 2
-	 * (ej: `ls s`, `grep` sin patrón) y eso haría que el shell “ignore” comandos.
-	 *
-	 * Nuestro handler de señales setea g_signal=130 para Ctrl+C.
-	 * El readline suele devolver una línea vacía tras Ctrl+C, así que solo
-	 * descartamos ese caso.
-	 */
 	if (g_signal == 130 && line && line[0] == '\0')
 	{
 		free(line);
