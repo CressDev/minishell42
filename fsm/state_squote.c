@@ -6,7 +6,7 @@
 /*   By: kjroydev <kjroydev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 19:33:52 by kjroydev          #+#    #+#             */
-/*   Updated: 2026/01/27 20:15:39 by kjroydev         ###   ########.fr       */
+/*   Updated: 2026/01/28 23:39:18 by kjroydev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	void_create(t_fsm *fsm)
 {
-	fsm->prev_state = STATE_DQUOTE;
+	fsm->prev_state = STATE_SQUOTE;
 	fsm->current_state = STATE_START;
 	fsm->quote_flag = false;
 }
